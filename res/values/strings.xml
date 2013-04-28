@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BikeTracker</string>
+    <string name="app_name">Bike Tracker</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="butStartTracking">Start Tracking</string>
+    <string name="butShowTracks">Show Tracks</string>
+    <string name="title_activity_track">Track Stats</string>
+    <string name="title_dialog">Choose Track Name</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
