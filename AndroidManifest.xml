@@ -3,10 +3,15 @@
     package="org.crappbytes.biketracker"
     android:versionCode="1"
     android:versionName="1.0" >
-
+	
+    <!-- Minimum Android 4.0 -->
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
+    
+    <!-- We need to access our current position. We do this only by using GPS -->
+    <uses-permission 
+        android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -22,15 +27,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--  Only portrait orientation for TrackActivity --> 
         <activity
             android:name="org.crappbytes.biketracker.TrackActivity"
             android:label="@string/title_activity_track" 
-            android:parentActivityName="org.crappbytes.biketracker.MainActivity" >
+            android:parentActivityName="org.crappbytes.biketracker.MainActivity"
+            android:screenOrientation="portrait" >
             <!-- Use meta-data for Android version older than 4.1 to get default navigation behavior -->
             <meta-data 
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.crappbytes.biketracker.MainActivity"/>
         </activity>
+        <service
+        	android:name="org.crappbytes.biketracker.GPSLoggerBackgroundService"
+        	android:label="GPSBackgroundService" >
+    	</service>
+    	<provider
+      		android:name=".contentprovider.TracksContentProvider"
+      		android:authorities="org.crappbytes.biketracker.contentprovider"
+      		android:exported="false" >
+   		</provider>
     </application>
 
 </manifest>

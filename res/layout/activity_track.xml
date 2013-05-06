@@ -7,10 +7,64 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".TrackActivity" >
+	
+    <LinearLayout 
+        android:id="@+id/topLinearL"       
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal" >
+	    <Button 
+	        android:id="@+id/butTrackDist"
+	        android:layout_height="wrap_content"
+	        android:layout_width="0dp"
+	        android:layout_weight="1"
+	         />
+	    <Button 
+	        android:id="@+id/butTrackHeight"
+	        android:layout_height="wrap_content"
+	        android:layout_width="0dp"
+	        android:layout_weight="1"
+	         />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@id/topLinearL" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal" >
+        <Button 
+	        android:id="@+id/butTrackDir"
+	        android:layout_height="wrap_content"
+	        android:layout_width="0dp"
+	        android:layout_weight="1"
+	         />
+        <Button 
+	        android:id="@+id/butTrackTime"
+	        android:layout_height="wrap_content"
+	        android:layout_width="0dp"
+	        android:layout_weight="1"
+	         />
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentBottom="true" >
+
+        <Button 
+            android:id="@+id/butStopTracking"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/stop"
+            android:drawableLeft="@drawable/ic_button_stop"
+            android:onClick="stopRecording"/>
+        <Button 
+            android:id="@+id/butPauseTracking"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/pause"
+            android:drawableLeft="@drawable/ic_button_pause"/>
+    </LinearLayout>
 
 </RelativeLayout>

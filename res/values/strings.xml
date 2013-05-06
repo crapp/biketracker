@@ -10,5 +10,10 @@
     <string name="title_dialog">Choose Track Name</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="noGPS">GPS is not activated</string>
+    <string name="noGPSmsg">You need to activate GPS in order to track your movement. Press OK and you will be redirected to the settings of your device.</string>
+    <string name="stop">Stop</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
 
 </resources>
