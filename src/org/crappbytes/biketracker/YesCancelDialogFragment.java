@@ -26,18 +26,23 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class GPSDialogFragment extends DialogFragment {
+public class YesCancelDialogFragment extends DialogFragment {
+	
+	
 	
 	/* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
-    public interface GPSDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        public void onDialogNegativeClick(DialogFragment dialog);
+    public interface YesCancelDialogListener {
+        public void onDialogPositiveClick(DialogFragment dialog, int type);
+        public void onDialogNegativeClick(DialogFragment dialog, int type);
     }
 	
+    public final static int DIALOG_GPS = 1;
+    public final static int DIALOG_STOP_TRACKING = 2;
+    
     // Instance of the interface to deliver action events
-    private GPSDialogListener gpsListener;
+    private YesCancelDialogListener ycListener;
     
     //We override the onAttach Method where we instantiate the DialogListener
     @Override
@@ -46,34 +51,43 @@ public class GPSDialogFragment extends DialogFragment {
     	
     	try {
     		// Instantiate the TrackDialogListener that we use to notify the calling Activity
-    		this.gpsListener = (GPSDialogListener) activity;
+    		this.ycListener = (YesCancelDialogListener) activity;
     	}
     	catch(ClassCastException e) {
     		// The activity does not implement the interface
     		throw new ClassCastException(activity.toString() + 
-    				 " must implement GPSDialogListener");
+    				 " must implement YesCancelDialogListener");
     	}
     }
     
-    @SuppressLint("SimpleDateFormat")
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	    
-		//set Title and message
-	    builder.setTitle(R.string.noGPS);
-	    builder.setMessage(R.string.noGPSmsg);
+		//
+		switch (getArguments().getInt("Type")) {
+		case DIALOG_GPS:
+			//set Title and message
+		    builder.setTitle(R.string.noGPS);
+		    builder.setMessage(R.string.noGPSmsg);
+		    break;
+		case DIALOG_STOP_TRACKING:
+			//set Title and message
+			builder.setTitle(R.string.stopTracking);
+			builder.setMessage(R.string.stopTrackingMsg);
+		}
+		
 	    //Add action buttons, you don't need to specify them in the layout file.
 	    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 	    		   @Override
 	    		   public void onClick(DialogInterface dialog, int id) {
-	    			   gpsListener.onDialogPositiveClick(GPSDialogFragment.this);
+	    			   ycListener.onDialogPositiveClick(YesCancelDialogFragment.this, getArguments().getInt("Type"));
 	    		   }
 	    	   })
 	    	   .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the negative button event back to the host activity
-                	   gpsListener.onDialogNegativeClick(GPSDialogFragment.this);
+                	   ycListener.onDialogNegativeClick(YesCancelDialogFragment.this, getArguments().getInt("Type"));
                    }
                });
 		return builder.create();

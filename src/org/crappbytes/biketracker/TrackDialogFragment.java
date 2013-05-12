@@ -93,7 +93,7 @@ public class TrackDialogFragment extends DialogFragment {
 	    newTrackName = (EditText)builderView.findViewById(R.id.nameNewTrack);
 	    //Use a GregorianCalendar to get Date and Time
 	    Calendar cal = new GregorianCalendar();
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH:MM"); 
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH:mm"); 
 	    newTrackName.setText("biketrack_" + dateFormat.format(cal.getTime()));
 		return builder.create();
 	}

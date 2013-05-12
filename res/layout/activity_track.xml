@@ -12,44 +12,143 @@
         android:id="@+id/topLinearL"       
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:orientation="horizontal" >
-	    <Button 
-	        android:id="@+id/butTrackDist"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="1"
-	         />
-	    <Button 
-	        android:id="@+id/butTrackHeight"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="1"
-	         />
+        android:orientation="horizontal" 
+        android:baselineAligned="false" >
+        <RelativeLayout 
+            android:id="@+id/relSpeed"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1" 
+            android:background="@drawable/track_value_selector" 
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:id="@+id/tvLabelSpeed"
+                android:text="@string/speed"
+                android:textSize="13sp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+            <RelativeLayout
+                android:layout_below="@id/tvLabelSpeed"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+                <!-- android:layout_below="@id/tvLabelSpeed" -->
+                <TextView
+                	android:id="@+id/tvSpeed"
+                	android:layout_centerHorizontal="true"
+                	android:layout_centerVertical="true"
+                	android:text="0.0 km/h"
+                	android:textStyle="bold"
+                	android:textSize="17sp"
+                	android:layout_height="wrap_content"
+                	android:layout_width="wrap_content" />
+            </RelativeLayout>
+            
+        </RelativeLayout>
+        <RelativeLayout 
+            android:id="@+id/relAltitude"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"  
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/track_value_selector" 
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:id="@+id/tvLabelAlt"
+                android:text="@string/altitude"
+                android:textSize="13sp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+            <RelativeLayout 
+                android:layout_below="@id/tvLabelAlt"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+                <TextView
+	                android:id="@+id/tvAlt"
+	                android:layout_centerHorizontal="true"
+	                android:layout_centerVertical="true"
+	                android:text="0.0 m"
+	                android:textStyle="bold"
+	                android:textSize="17sp"
+	                android:layout_height="wrap_content"
+	                android:layout_width="wrap_content" />
+            </RelativeLayout>
+        </RelativeLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_below="@id/topLinearL" 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal" >
-        <Button 
-	        android:id="@+id/butTrackDir"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="1"
-	         />
-        <Button 
-	        android:id="@+id/butTrackTime"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="1"
-	         />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" 
+        android:orientation="horizontal" 
+        android:baselineAligned="false">
+        <!-- baselineAligned=false for better performance!? -->
+        <RelativeLayout 
+            android:id="@+id/relDistance"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1" 
+            android:background="@drawable/track_value_selector" 
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:id="@+id/tvLabelDistance"
+                android:text="@string/distance"
+                android:textSize="13sp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+            <RelativeLayout 
+                android:layout_below="@id/tvLabelDistance"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+                <TextView
+	                android:id="@+id/tvDistance"
+	                android:layout_centerHorizontal="true"
+	                android:layout_centerVertical="true"
+	                android:text="0.0 km"
+	                android:textStyle="bold"
+	                android:textSize="17sp"
+	                android:layout_height="wrap_content"
+	                android:layout_width="wrap_content" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout 
+            android:id="@+id/relTime"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"  
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/track_value_selector" 
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:id="@+id/tvLabelTime"
+                android:text="@string/traveltime"
+                android:textSize="13sp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+            <RelativeLayout
+                android:layout_below="@id/tvLabelTime"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+                <TextView
+	                android:id="@+id/tvTime"
+	                android:layout_centerHorizontal="true"
+	                android:layout_centerVertical="true"
+	                android:text="00:00"
+	                android:textStyle="bold"
+	                android:textSize="17sp"
+	                android:layout_height="wrap_content"
+	                android:layout_width="wrap_content" />
+            </RelativeLayout>
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" >
-
         <Button 
             android:id="@+id/butStopTracking"
             android:layout_height="wrap_content"

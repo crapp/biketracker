@@ -3,7 +3,6 @@
 
     <string name="app_name">Bike Tracker</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="butStartTracking">Start Tracking</string>
     <string name="butShowTracks">Show Tracks</string>
     <string name="title_activity_track">Track Stats</string>
@@ -12,8 +11,14 @@
     <string name="cancel">Cancel</string>
     <string name="noGPS">GPS is not activated</string>
     <string name="noGPSmsg">You need to activate GPS in order to track your movement. Press OK and you will be redirected to the settings of your device.</string>
+    <string name="stopTracking">Stop tracking?</string>
+    <string name="stopTrackingMsg">Do you really want to stop tracking and return to the start screen of BikeTracker?</string>
     <string name="stop">Stop</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
+    <string name="speed">Speed</string>
+    <string name="altitude">Altitude</string>
+    <string name="distance">Distance</string>
+    <string name="traveltime">Travel time</string>
 
 </resources>

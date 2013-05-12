@@ -18,33 +18,54 @@
 
 package org.crappbytes.biketracker;
 
-import org.crappbytes.biketracker.GPSDialogFragment.GPSDialogListener;
+import java.util.concurrent.TimeUnit;
+
+import org.crappbytes.biketracker.YesCancelDialogFragment.YesCancelDialogListener;
+import org.crappbytes.biketracker.R.id;
 import org.crappbytes.biketracker.contentprovider.TracksContentProvider;
+import org.crappbytes.biketracker.database.TrackNodesTable;
 import org.crappbytes.biketracker.database.TrackTable;
 
+import android.app.ActionBar;
 import android.app.DialogFragment;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class TrackActivity extends FragmentActivity implements GPSDialogListener {
+public class TrackActivity extends FragmentActivity implements YesCancelDialogListener, LoaderCallbacks<Cursor> {
 	
 	//Member area
-	private String trackName;
-	private Button stopButton;
+	private TextView tvSpeed;
+	private TextView tvAltitude;
+	private TextView tvDistance;
+	private TextView tvTime;
 	private Button pauResButton;
+	
+	private String trackName;
+	private String trackID;
+	private final static int LOADER_GENERAL = 1;
+	private Track track;
 	
 	//Interface Member 
 	private final OnClickListener pauseRecListener = new OnClickListener() {
@@ -78,11 +99,26 @@ public class TrackActivity extends FragmentActivity implements GPSDialogListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_track);
 		
+		this.track = new Track();
+		
+		this.trackID = "0";
+        //Make sure we're running on Honeycomb or higher to use ActionBar APIs
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            // Home as Up
+            ActionBar actionBar = getActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+		
 		//Intent is a connection between Activities
 		Intent intent = getIntent();
 		this.trackName = intent.getStringExtra("org.crappbytes.TrackName");
 		
-		Button checkGPS = (Button) findViewById(R.id.butTrackDist);
+		this.tvAltitude = (TextView) findViewById(R.id.tvAlt);
+		this.tvSpeed = (TextView) findViewById(R.id.tvSpeed);
+		this.tvDistance = (TextView) findViewById(R.id.tvDistance);
+		this.tvTime = (TextView) findViewById(R.id.tvTime);
+		
+		RelativeLayout checkGPS = (RelativeLayout) findViewById(R.id.relAltitude);
 		checkGPS.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
@@ -98,11 +134,11 @@ public class TrackActivity extends FragmentActivity implements GPSDialogListener
 			}
 		});
 		
-		this.stopButton = (Button) findViewById(R.id.butStopTracking);
 		this.pauResButton = (Button) findViewById(R.id.butPauseTracking);
 		this.pauResButton.setOnClickListener(pauseRecListener);
 		
 		insertTrack();
+		getLoaderManager().initLoader(LOADER_GENERAL, null, this);
 		
 	}
 
@@ -111,6 +147,31 @@ public class TrackActivity extends FragmentActivity implements GPSDialogListener
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.track, menu);
 		return true;
+	}
+	
+	
+	/**
+	 * Will be triggered whenever an Item in the Action Bar will be clicked
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// This ID represents the Home or Up button. In the case of this
+			// activity, the Up button is shown. Use NavUtils to allow users
+			// to navigate up one level in the application structure. For
+			// more details, see the Navigation pattern on Android Design:
+			//
+			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
+			DialogFragment trackCancelDialog = new YesCancelDialogFragment();
+			Bundle args = new Bundle();
+			args.putInt("Type", YesCancelDialogFragment.DIALOG_STOP_TRACKING);
+			trackCancelDialog.setArguments(args);
+			trackCancelDialog.show(getFragmentManager(), "trackCancelDialog");
+	        return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	@Override
@@ -125,26 +186,38 @@ public class TrackActivity extends FragmentActivity implements GPSDialogListener
 	        // Build an alert dialog here that requests that the user enable
 	        // the location services, then when the user clicks the "OK" button,
 	        // call enableLocationSettings()
-	    	DialogFragment gpsDialog = new GPSDialogFragment();
+	    	DialogFragment gpsDialog = new YesCancelDialogFragment();
+	    	Bundle args = new Bundle();
+	    	args.putInt("Type", YesCancelDialogFragment.DIALOG_GPS);
+	    	gpsDialog.setArguments(args);
 	    	gpsDialog.show(getFragmentManager(), "gpsOffDialog");
 	    } else {
 	    	Intent serviceIntent = new Intent(this, GPSLoggerBackgroundService.class);
-			serviceIntent.putExtra("TrackName", this.trackName);
-	    	//startService(new Intent(this, GPSLoggerBackgroundService.class));
+			//Pass the name and the ID of the track to our gps log service.
+	    	serviceIntent.putExtra("TrackName", this.trackName);
+			serviceIntent.putExtra("TrackID", this.trackID);
+	    	startService(serviceIntent);
 	    }
 	}
 	
 	@Override
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
+		DialogFragment trackCancelDialog = new YesCancelDialogFragment();
+    	Bundle args = new Bundle();
+    	args.putInt("Type", YesCancelDialogFragment.DIALOG_STOP_TRACKING);
+    	trackCancelDialog.setArguments(args);
+    	trackCancelDialog.show(getFragmentManager(), "trackCancelDialog");
 	}
 	
 	/**
 	 * Stop track recording, needs to be public as we access this onClick Handler via XML
 	 */
 	public void stopRecording(View v) {
-		stopService(new Intent(this, GPSLoggerBackgroundService.class));
+		if (stopService(new Intent(this, GPSLoggerBackgroundService.class))) {
+			Toast.makeText(getApplicationContext(), "Service stopped successfully",
+                    Toast.LENGTH_SHORT).show();
+			NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+		}
 		//TODO: Open a Track Overview Activity. Reuse this activity for detail view in track list. Or use a fragment for this  
 	}
 	
@@ -157,6 +230,7 @@ public class TrackActivity extends FragmentActivity implements GPSDialogListener
                     Toast.LENGTH_SHORT).show();
 			Drawable icon= getBaseContext().getResources().getDrawable(R.drawable.ic_button_play);
 			((Button) v).setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+			((Button) v).setText(R.string.resume);
 			((Button) v).setOnClickListener(resumeRecListener);
 		}
 	}
@@ -168,17 +242,38 @@ public class TrackActivity extends FragmentActivity implements GPSDialogListener
 	private void resumeRecording(View v) {
 		Intent serviceIntent = new Intent(this, GPSLoggerBackgroundService.class);
 		serviceIntent.putExtra("TrackName", this.trackName);
+		serviceIntent.putExtra("TrackID", this.trackID);
 		if (startService(serviceIntent) != null) {
+			Toast.makeText(getApplicationContext(), "Service started successfully",
+                    Toast.LENGTH_SHORT).show();
 			Drawable icon= getBaseContext().getResources().getDrawable(R.drawable.ic_button_pause);
 			((Button) v).setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+			((Button) v).setText(R.string.pause);
 			((Button) v).setOnClickListener(pauseRecListener);
 		}
 	}
 	
+	/**
+	 * Insert new Track into Database
+	 */
 	private void insertTrack() {
+		if (Integer.parseInt(this.trackID) > 0) {
+			Cursor cursor = getContentResolver().query(TracksContentProvider.CONTENT_URI_TRACK,
+					new String[]{TrackTable.COLUMN_ID},
+					TrackTable.COLUMN_ID + "=?",
+					new String[] {this.trackID},
+					null);
+			if (cursor != null && cursor.getCount() > 0) {
+				//ups the track is already in the database -> fetch data
+				return;
+			}
+		}
 		ContentValues cv = new ContentValues();
+		//all we need to provide is the trackname
 		cv.put(TrackTable.COLUMN_NAME, this.trackName);
-		getContentResolver().insert(TracksContentProvider.CONTENT_URI_TRACK, cv);
+		Uri url = getContentResolver().insert(TracksContentProvider.CONTENT_URI_TRACK, cv);
+		//the last element of the Uri returned by insert is the ID. Store it as we need to pass it to the background service
+		this.trackID = url.getLastPathSegment();
 	}
 	
 	private boolean gpsEnabled() {
@@ -188,19 +283,98 @@ public class TrackActivity extends FragmentActivity implements GPSDialogListener
 	}
 	
 	private void enableLocationSettings() {
+		//Start the location settings
 	    Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 	    startActivity(settingsIntent);
 	}
 	
 	//Here follow the methods we need to implement because of the GPSDialogListener interface
 	@Override
-	public void onDialogPositiveClick(DialogFragment dialog) {
-		this.enableLocationSettings();
-		
+	public void onDialogPositiveClick(DialogFragment dialog, int type) {
+		switch (type) {
+		case YesCancelDialogFragment.DIALOG_GPS:
+			this.enableLocationSettings();
+			break;
+		case YesCancelDialogFragment.DIALOG_STOP_TRACKING:
+			this.stopRecording(null);
+		}
 	}
 
 	@Override
-	public void onDialogNegativeClick(DialogFragment dialog) {
+	public void onDialogNegativeClick(DialogFragment dialog, int type) {
+		switch (type) {
+		case YesCancelDialogFragment.DIALOG_GPS:
+			//TODO: Is it ok to go back to the mainActivity if user does not want to
+			//activate GPS?! 
+			NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+			break;
+		case YesCancelDialogFragment.DIALOG_STOP_TRACKING:
+			//Cancel so nothing to do
+			break;
+		}
+	}
+	
+	//Loader callback methods
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		CursorLoader loader = null;
+		switch (id) {
+		case LOADER_GENERAL:
+			//Our standard query to get all waypoints for the current track
+			loader = new CursorLoader(this,
+					TracksContentProvider.CONTENT_URI_NODES,
+					null,
+					TrackNodesTable.COLUMN_TRACKID + "=?",
+					new String[]{this.trackID},
+					null);
+			break;
+		}
+		return loader;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		switch (loader.getId()) {
+		case LOADER_GENERAL:
+			if (cursor != null && cursor.getCount() > 0) {
+				//the last element is important for us
+				cursor.moveToLast();
+				double height = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_ALTITUDE));
+				double speed = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_SPEED));
+				long time = cursor.getLong(cursor.getColumnIndex(TrackNodesTable.COLUMN_TIME));
+				double longitude = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_LONGITUDE));
+				double latitude = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_LATITUDE));
+				
+				//move to previous element. Use the element to compute elapsed time and distance
+				if (cursor.moveToPrevious()) {
+					long timePrevious = cursor.getLong(cursor.getColumnIndex(TrackNodesTable.COLUMN_TIME));
+					long timeDelta = time - timePrevious + this.track.getElapsedTime();
+					track.setElapsedTime(timeDelta);
+					long hours = TimeUnit.MILLISECONDS.toHours(timeDelta);
+					long minutes = TimeUnit.MILLISECONDS.toMinutes(timeDelta) - (hours * 60);
+					this.tvTime.setText(String.valueOf(hours) + ":" + String.valueOf(minutes));
+					
+					double prevLongitude = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_LONGITUDE));
+					double prevLatitude = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_LATITUDE));
+					double distance = Utility.haversineDistance(prevLatitude, prevLongitude, latitude, longitude);
+					double distInKM = Utility.round(track.getDistance() + distance, 3);
+					this.tvDistance.setText(String.valueOf(distInKM) + " km");
+				}
+				
+				height = Utility.round(height, 1);
+				speed = Utility.convertSpeed(speed);
+				speed = Utility.round(speed, 0);
+				
+				this.tvSpeed.setText(String.valueOf(speed) + " km/h");
+				this.tvAltitude.setText(String.valueOf(height) + " m");
+				
+			}
+			break;
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
 		// TODO Auto-generated method stub
 		
 	}

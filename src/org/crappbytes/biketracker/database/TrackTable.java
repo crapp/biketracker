@@ -22,7 +22,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class TrackTable {
-	public static final String TABLE_NAME = "tracks";
+	public static final String TABLE_NAME = "track";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_NAME = "name";
 	public static final String COLUMN_MODIFIED = "modified";
