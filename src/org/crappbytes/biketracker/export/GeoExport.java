@@ -11,6 +11,7 @@ import android.widget.Toast;
 public abstract class GeoExport {
 	private String outFile;
 	private Context appContext;
+	//TODO: How do we get the data for the track to export? Own database query (is this possible with the passed context??), or pass in a cursor? 
 	
 	public abstract String buildXMLStructure();
 	
