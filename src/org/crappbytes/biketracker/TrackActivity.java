@@ -21,10 +21,10 @@ package org.crappbytes.biketracker;
 import java.util.concurrent.TimeUnit;
 
 import org.crappbytes.biketracker.YesCancelDialogFragment.YesCancelDialogListener;
-import org.crappbytes.biketracker.R.id;
 import org.crappbytes.biketracker.contentprovider.TracksContentProvider;
 import org.crappbytes.biketracker.database.TrackNodesTable;
 import org.crappbytes.biketracker.database.TrackTable;
+import org.crappbytes.biketracker.export.GeoExportKML;
 
 import android.app.ActionBar;
 import android.app.DialogFragment;
@@ -64,8 +64,8 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 	
 	private String trackName;
 	private String trackID;
-	private final static int LOADER_GENERAL = 1;
-	private Track track;
+	private static final int LOADER_GENERAL = 1;
+	private static final int LOADER_FUNC = 2;
 	
 	//Interface Member 
 	private final OnClickListener pauseRecListener = new OnClickListener() {
@@ -99,15 +99,11 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_track);
 		
-		this.track = new Track();
-		
 		this.trackID = "0";
-        //Make sure we're running on Honeycomb or higher to use ActionBar APIs
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Home as Up
-            ActionBar actionBar = getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+		
+		//get action bar and set ancestral navigation
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		//Intent is a connection between Activities
 		Intent intent = getIntent();
@@ -131,6 +127,8 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 				//Show a toast 
 				Toast.makeText(getApplicationContext(), toastMsg,
 	                    Toast.LENGTH_SHORT).show();
+				GeoExportKML geoex = new GeoExportKML(getApplicationContext(), "foo.kml");
+				geoex.serializeDataToFile();
 			}
 		});
 		
@@ -139,7 +137,7 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		
 		insertTrack();
 		getLoaderManager().initLoader(LOADER_GENERAL, null, this);
-		
+		getLoaderManager().initLoader(LOADER_FUNC, null, this);
 	}
 
 	@Override
@@ -326,6 +324,16 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 					null,
 					TrackNodesTable.COLUMN_TRACKID + "=?",
 					new String[]{this.trackID},
+					TrackNodesTable.COLUMN_TIMESTAMP + " ASC");
+			break;
+		case LOADER_FUNC:
+			String[] projection = new String[] {TrackNodesTable.COLUMN_ID,
+							"SUM(" + TrackNodesTable.COLUMN_DISTANCE + ") AS sum_" + TrackNodesTable.COLUMN_DISTANCE};
+			loader = new CursorLoader(this,
+					TracksContentProvider.CONTENT_URI_NODES,
+					projection,
+					TrackNodesTable.COLUMN_TRACKID + "=?",
+					new String[]{this.trackID},
 					null);
 			break;
 		}
@@ -341,33 +349,38 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 				cursor.moveToLast();
 				double height = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_ALTITUDE));
 				double speed = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_SPEED));
-				long time = cursor.getLong(cursor.getColumnIndex(TrackNodesTable.COLUMN_TIME));
-				double longitude = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_LONGITUDE));
-				double latitude = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_LATITUDE));
 				
-				//move to previous element. Use the element to compute elapsed time and distance
-				if (cursor.moveToPrevious()) {
-					long timePrevious = cursor.getLong(cursor.getColumnIndex(TrackNodesTable.COLUMN_TIME));
-					long timeDelta = time - timePrevious + this.track.getElapsedTime();
-					track.setElapsedTime(timeDelta);
-					long hours = TimeUnit.MILLISECONDS.toHours(timeDelta);
-					long minutes = TimeUnit.MILLISECONDS.toMinutes(timeDelta) - (hours * 60);
-					this.tvTime.setText(String.valueOf(hours) + ":" + String.valueOf(minutes));
-					
-					double prevLongitude = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_LONGITUDE));
-					double prevLatitude = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_LATITUDE));
-					double distance = Utility.haversineDistance(prevLatitude, prevLongitude, latitude, longitude);
-					double distInKM = Utility.round(track.getDistance() + distance, 3);
-					this.tvDistance.setText(String.valueOf(distInKM) + " km");
-				}
+				//Update race time
+				long rTime = cursor.getLong(cursor.getColumnIndex(TrackNodesTable.COLUMN_RACETIME));
+				long hours = TimeUnit.MILLISECONDS.toHours(rTime);
+				long minutes = TimeUnit.MILLISECONDS.toMinutes(rTime) - (hours * 60);
+				long seconds = TimeUnit.MILLISECONDS.toMinutes(rTime) - (hours * 3600) - (minutes * 60);
+				String shours = "";
+				//string must have at least two digits --> substring
+				shours = ("00" + String.valueOf(hours)).substring(String.valueOf(hours).length());
+				String sminutes = "";
+				sminutes = ("00" + String.valueOf(minutes)).substring(String.valueOf(minutes).length());
+				String sseconds = "";
+				sseconds = ("00" + String.valueOf(seconds)).substring(String.valueOf(seconds).length());
+				this.tvTime.setText(shours + ":" + sminutes + ":" + sseconds);
 				
+				//update height
 				height = Utility.round(height, 1);
-				speed = Utility.convertSpeed(speed);
-				speed = Utility.round(speed, 0);
-				
-				this.tvSpeed.setText(String.valueOf(speed) + " km/h");
 				this.tvAltitude.setText(String.valueOf(height) + " m");
 				
+				//update speed
+				speed = Utility.convertSpeed(speed);
+				speed = Utility.round(speed, 0);
+				this.tvSpeed.setText(String.valueOf(speed) + " km/h");
+				
+			}
+			break;
+		case LOADER_FUNC:
+			if (cursor != null && cursor.getCount() > 0) {
+				//update distance
+				cursor.moveToFirst();
+				double distInKM = Utility.round(cursor.getDouble(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_DISTANCE)), 3);
+				this.tvDistance.setText(String.valueOf(distInKM) + " km");
 			}
 			break;
 		}

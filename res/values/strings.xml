@@ -20,5 +20,6 @@
     <string name="altitude">Altitude</string>
     <string name="distance">Distance</string>
     <string name="traveltime">Travel time</string>
-
+    <string name="title_activity_track_list">List of tracks</string>
+    <string name="noTracksInDB">No Tracks so far, go back and record one :)</string>
 </resources>

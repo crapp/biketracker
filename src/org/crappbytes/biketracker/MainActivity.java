@@ -20,18 +20,15 @@ package org.crappbytes.biketracker;
 
 import org.crappbytes.biketracker.TrackDialogFragment.TrackDialogListener;
 
-import android.media.MediaPlayer.TrackInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 public class MainActivity extends Activity implements TrackDialogListener{
 	
@@ -54,6 +51,15 @@ public class MainActivity extends Activity implements TrackDialogListener{
 			public void onClick(View v) {
 				DialogFragment trackDialog = new TrackDialogFragment();
 				trackDialog.show(getFragmentManager(), "trackdialog");
+			}
+		});
+        Button butTrackList = (Button) findViewById(R.id.butShowTracks);
+        butTrackList.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent trackListIntent = new Intent(MainActivity.this, TrackListActivity.class);
+		        startActivity(trackListIntent);
 			}
 		});
     }

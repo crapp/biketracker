@@ -25,9 +25,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -47,22 +49,41 @@ public class GPSLoggerBackgroundService extends Service {
 
 	private LocationManager locManager;
 	private NotificationManager notiManager;
-	private long minTimeMs = 10000; //get update every x seconds
+	private long minTimeMs = 3000; //get update every x seconds
 	private long minDistance = 10; //Minimum distance between two points in meters?! 
 	private float minAccuracy = 35; //Minimum accuracy to store the gps position
 	private String trackName;
 	private int trackID;
+	private Location prevLoc;
+	private long unixTime;
+	private long raceTime;
 	
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		try {
+			
+			this.prevLoc = null;
+			this.unixTime = 0;
+			this.raceTime = 0;
+			Cursor cursor = getContentResolver().query(TracksContentProvider.CONTENT_URI_NODES,
+					null,
+					TrackNodesTable.COLUMN_TRACKID + "=?" ,
+					new String[] {String.valueOf(trackID)},
+					TrackNodesTable.COLUMN_ID + " ASC");
+			if (cursor != null && cursor.getCount() > 0 ) {
+				cursor.moveToLast();
+				this.raceTime = cursor.getInt(cursor.getColumnIndex(TrackNodesTable.COLUMN_RACETIME));
+			}
+			
 			locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 
 					this.minTimeMs, 
 					this.minDistance,
 					this.listener);
+			
+			//get notification manager
 			notiManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 			// Prepare intent which is triggered if the
 		    // notification is selected
@@ -93,7 +114,35 @@ public class GPSLoggerBackgroundService extends Service {
 			// TODO Write to DB and notify UI
 			//http://stackoverflow.com/questions/2463175/how-to-have-android-service-communicate-with-activity
 			if (location.getAccuracy() <= minAccuracy) {
-				//hoooray we can use this one 
+				//hoooray we can use this one
+				
+				double distance = 0;
+				//calculate distance to previous node now and store in db
+				if (prevLoc != null) {
+					//compute distance to previous location
+					distance = Utility.haversineDistance(prevLoc.getLatitude(),
+							prevLoc.getLongitude(),
+							location.getLatitude(),
+							location.getLongitude());
+				}
+				
+				//calculate race time now and store in db
+				if (unixTime != 0) {
+					//get seconds since epoche
+					long newUnixTime = System.currentTimeMillis() / 1000L;
+					long timeDelta = newUnixTime - unixTime;
+					//only store if 
+					if (timeDelta <= 5) { 
+						raceTime += timeDelta;
+					}
+					unixTime = newUnixTime;
+				} else {
+					unixTime = System.currentTimeMillis() / 1000L;
+				}
+				
+				//TODO: Maybe saving lat/lon would also do the trick?!
+				//save location as previous location. 
+				prevLoc = location;
 				ContentValues cv = new ContentValues();
 				cv.put(TrackNodesTable.COLUMN_TRACKID, trackID);
 				cv.put(TrackNodesTable.COLUMN_ACCURACY, location.getAccuracy());
@@ -102,7 +151,8 @@ public class GPSLoggerBackgroundService extends Service {
 				cv.put(TrackNodesTable.COLUMN_LATITUDE, location.getLatitude());
 				cv.put(TrackNodesTable.COLUMN_LONGITUDE, location.getLongitude());
 				cv.put(TrackNodesTable.COLUMN_SPEED, location.getSpeed());
-				cv.put(TrackNodesTable.COLUMN_TIME, location.getTime());
+				cv.put(TrackNodesTable.COLUMN_DISTANCE, distance);
+				cv.put(TrackNodesTable.COLUMN_RACETIME, raceTime);
 				Uri url = getContentResolver().insert(TracksContentProvider.CONTENT_URI_NODES, cv);
 				if (url == null) {
 					Toast.makeText(getBaseContext(),

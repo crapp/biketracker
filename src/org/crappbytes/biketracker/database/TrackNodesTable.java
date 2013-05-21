@@ -31,7 +31,9 @@ public class TrackNodesTable {
 	public static final String COLUMN_LATITUDE = "latitude";
 	public static final String COLUMN_LONGITUDE = "longitude";
 	public static final String COLUMN_SPEED = "speed";
-	public static final String COLUMN_TIME = "time";
+	public static final String COLUMN_DISTANCE = "distance"; //Distance to previous node in km
+	public static final String COLUMN_RACETIME = "racetime";
+	public static final String COLUMN_TIMESTAMP = "timestamp";
 	
 	//Table create string
 	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME 
@@ -43,7 +45,9 @@ public class TrackNodesTable {
 			+ COLUMN_LATITUDE + " REAL NOT NULL, "
 			+ COLUMN_LONGITUDE + " REAL NOT NULL, "
 			+ COLUMN_SPEED + " REAL, "
-			+ COLUMN_TIME +  " INTEGER NOT NULL)";
+			+ COLUMN_DISTANCE + " REAL, "
+			+ COLUMN_RACETIME + " INTEGER, " 
+			+ COLUMN_TIMESTAMP  + " DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP )";
 	
 	public static void onCreate(SQLiteDatabase db) {
 		db.execSQL(TABLE_CREATE);
