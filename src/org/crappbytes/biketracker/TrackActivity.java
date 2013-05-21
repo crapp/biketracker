@@ -29,7 +29,6 @@ import org.crappbytes.biketracker.export.GeoExportKML;
 import android.app.ActionBar;
 import android.app.DialogFragment;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -39,7 +38,6 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
@@ -81,15 +79,6 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		@Override
 		public void onClick(View v) {
 			resumeRecording(v);
-		}
-	};
-	
-	private final BroadcastReceiver bCastRecv = new BroadcastReceiver() {
-		
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-			
 		}
 	};
 	

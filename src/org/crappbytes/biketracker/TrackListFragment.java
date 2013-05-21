@@ -18,31 +18,31 @@
 
 package org.crappbytes.biketracker;
 
-public class Track {
-	private double distance; //km
-	private long elapsedTime; //ms
-	
-	public Track() {
-		this.distance = 0;
-		this.elapsedTime = 0;
+import android.app.ListFragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+public class TrackListFragment extends ListFragment {
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
-	
-	public double getDistance() {
-		return distance;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
 	}
-	public void setDistance(double distance) {
-		this.distance = distance;
+
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
 	}
-	public void addDistance(double distance) {
-		this.distance += distance;
-	}
-	public long getElapsedTime() {
-		return elapsedTime;
-	}
-	public void setElapsedTime(long timeDelta) {
-		this.elapsedTime = timeDelta;
-	}
-	public void addElapsedTime(long timedelta) {
-		this.elapsedTime += timedelta;
-	}
+
 }

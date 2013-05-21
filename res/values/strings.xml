@@ -22,4 +22,7 @@
     <string name="traveltime">Travel time</string>
     <string name="title_activity_track_list">List of tracks</string>
     <string name="noTracksInDB">No Tracks so far, go back and record one :)</string>
+    <string name="title_activity_track_container">TrackContainerActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
