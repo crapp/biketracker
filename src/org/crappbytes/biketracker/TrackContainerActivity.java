@@ -18,13 +18,15 @@
 
 package org.crappbytes.biketracker;
 
+import org.crappbytes.biketracker.TrackListFragment.onTrackSelectedListener;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
-public class TrackContainerActivity extends Activity {
+public class TrackContainerActivity extends Activity implements onTrackSelectedListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,5 +79,11 @@ public class TrackContainerActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onTrackSelected(int position) {
+		//TODO: Switch Fragments and tell the new fragment which position was selected
+		
 	}
 }

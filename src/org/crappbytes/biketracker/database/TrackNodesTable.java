@@ -27,6 +27,9 @@ public class TrackNodesTable {
 	public static final String COLUMN_TRACKID = "trackid";
 	public static final String COLUMN_ACCURACY = "accuracy";
 	public static final String COLUMN_ALTITUDE = "altitude";
+	public static final String COLUMN_ALTITUDELPF = "altitudelpf"; //smoothed altitude using a lpf
+	public static final String COLUMN_ALTITUDEUP = "altitudeup"; 
+	public static final String COLUMN_ALTITUDEDOWN = "altitudedown";
 	public static final String COLUMN_BEARING = "bearing";
 	public static final String COLUMN_LATITUDE = "latitude";
 	public static final String COLUMN_LONGITUDE = "longitude";
@@ -41,6 +44,9 @@ public class TrackNodesTable {
 			+ COLUMN_TRACKID + " INTEGER NOT NULL REFERENCES " + TrackTable.TABLE_NAME + "(" + TrackTable.COLUMN_ID + ") ON DELETE CASCADE, "
 			+ COLUMN_ACCURACY + " REAL NOT NULL, "
 			+ COLUMN_ALTITUDE + " REAL, "
+			+ COLUMN_ALTITUDELPF + " REAL, "
+			+ COLUMN_ALTITUDEUP + " REAL, "
+			+ COLUMN_ALTITUDEDOWN + " REAL, "
 			+ COLUMN_BEARING + " REAL, " 
 			+ COLUMN_LATITUDE + " REAL NOT NULL, "
 			+ COLUMN_LONGITUDE + " REAL NOT NULL, "

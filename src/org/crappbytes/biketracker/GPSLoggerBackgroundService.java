@@ -37,6 +37,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.text.AlteredCharSequence;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -49,8 +50,10 @@ public class GPSLoggerBackgroundService extends Service {
 
 	private LocationManager locManager;
 	private NotificationManager notiManager;
-	private long minTimeMs = 3000; //get update every x seconds
-	private long minDistance = 10; //Minimum distance between two points in meters?! 
+	private LowPassFilter lpf;
+	//TODO: make this values configurable!!
+	private long minTimeMs = 2000; //get update every x seconds
+	private long minDistance = 5; //Minimum distance between two points in meters?! Or the min distance loc manager will get an update. 
 	private float minAccuracy = 35; //Minimum accuracy to store the gps position
 	private String trackName;
 	private int trackID;
@@ -76,6 +79,8 @@ public class GPSLoggerBackgroundService extends Service {
 				cursor.moveToLast();
 				this.raceTime = cursor.getInt(cursor.getColumnIndex(TrackNodesTable.COLUMN_RACETIME));
 			}
+			
+			this.lpf = null;
 			
 			locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 
@@ -116,7 +121,13 @@ public class GPSLoggerBackgroundService extends Service {
 			if (location.getAccuracy() <= minAccuracy) {
 				//hoooray we can use this one
 				
+				double[] altiAscDesc = {location.getAltitude(), 0, 0};
 				double distance = 0;
+				
+				if (lpf == null) {
+					lpf = new LowPassFilter(location.getAltitude());
+				}
+				
 				//calculate distance to previous node now and store in db
 				if (prevLoc != null) {
 					//compute distance to previous location
@@ -124,6 +135,8 @@ public class GPSLoggerBackgroundService extends Service {
 							prevLoc.getLongitude(),
 							location.getLatitude(),
 							location.getLongitude());
+					
+					altiAscDesc = lpf.applyFilter(location.getAltitude());
 				}
 				
 				//calculate race time now and store in db
@@ -132,7 +145,7 @@ public class GPSLoggerBackgroundService extends Service {
 					long newUnixTime = System.currentTimeMillis() / 1000L;
 					long timeDelta = newUnixTime - unixTime;
 					//only store if 
-					if (timeDelta <= 5) { 
+					if (timeDelta <= 10) { 
 						raceTime += timeDelta;
 					}
 					unixTime = newUnixTime;
@@ -140,13 +153,15 @@ public class GPSLoggerBackgroundService extends Service {
 					unixTime = System.currentTimeMillis() / 1000L;
 				}
 				
-				//TODO: Maybe saving lat/lon would also do the trick?!
 				//save location as previous location. 
 				prevLoc = location;
 				ContentValues cv = new ContentValues();
 				cv.put(TrackNodesTable.COLUMN_TRACKID, trackID);
 				cv.put(TrackNodesTable.COLUMN_ACCURACY, location.getAccuracy());
 				cv.put(TrackNodesTable.COLUMN_ALTITUDE, location.getAltitude());
+				cv.put(TrackNodesTable.COLUMN_ALTITUDELPF, altiAscDesc[0]);
+				cv.put(TrackNodesTable.COLUMN_ALTITUDEUP, altiAscDesc[1]);
+				cv.put(TrackNodesTable.COLUMN_ALTITUDEDOWN, altiAscDesc[2]);
 				cv.put(TrackNodesTable.COLUMN_BEARING, location.getBearing());
 				cv.put(TrackNodesTable.COLUMN_LATITUDE, location.getLatitude());
 				cv.put(TrackNodesTable.COLUMN_LONGITUDE, location.getLongitude());

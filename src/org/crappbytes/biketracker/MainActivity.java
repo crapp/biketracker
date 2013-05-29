@@ -58,7 +58,8 @@ public class MainActivity extends Activity implements TrackDialogListener{
 			
 			@Override
 			public void onClick(View v) {
-				Intent trackListIntent = new Intent(MainActivity.this, TrackListActivity.class);
+				//Intent trackListIntent = new Intent(MainActivity.this, TrackListActivity.class);
+				Intent trackListIntent = new Intent(MainActivity.this, TrackContainerActivity.class);
 		        startActivity(trackListIntent);
 			}
 		});

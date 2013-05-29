@@ -106,7 +106,7 @@ public class TrackListActivity extends ListActivity implements LoaderCallbacks<C
 				new String[]{TrackTable.COLUMN_ID, TrackTable.COLUMN_NAME},
 				null,
 				null,
-				null);
+				TrackTable.COLUMN_TIMESTAMP + " ASC");
 		return loader;
 	}
 

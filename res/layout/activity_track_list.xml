@@ -18,7 +18,7 @@
 	          android:layout_height="match_parent"
 	          android:layout_centerInParent="true"
 	          android:background="#ff9600"
-	          android:textSize="20dp"
+	          android:textSize="30sp"
 	          android:textStyle="bold"
 	          android:text="@string/noTracksInDB"/>
 </RelativeLayout>

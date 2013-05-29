@@ -24,22 +24,27 @@ public class TracksContentProvider extends ContentProvider {
 	// Nodes table
 	private static final int NODES = 30;
 	private static final int NODES_ID = 40;
+	//Special code for join and groupBy
+	private static final int TRACKNODES = 50;
 
 	private static final String AUTHORITY = "org.crappbytes.biketracker.contentprovider";
 
 	// Define the Uris
 	private static final String PATH_TRACK = "track";
 	private static final String PATH_NODES = "nodes";
+	private static final String PATH_TRACKNODES = "tracknodes";
 
 	// Content uri
 	public static final Uri CONTENT_URI_TRACK = Uri.parse("content://"
 			+ AUTHORITY + "/" + PATH_TRACK);
 	public static final Uri CONTENT_URI_NODES = Uri.parse("content://"
 			+ AUTHORITY + "/" + PATH_NODES);
+	public static final Uri CONTENT_URI_TRACKNODES = Uri.parse("content://"
+			+ AUTHORITY + "/" + PATH_TRACKNODES);
 
 	// FIXME: Do we need to define CONTENT_TYPE --> RTFM
 
-	// Setup UriMatcher, one Uri pair for each table
+	// Setup UriMatcher, one Uri pair for each table and one for the table join
 	private static final UriMatcher sURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
 	static {
@@ -47,6 +52,7 @@ public class TracksContentProvider extends ContentProvider {
 		sURIMatcher.addURI(AUTHORITY, PATH_TRACK + "/#", TRACK_ID);
 		sURIMatcher.addURI(AUTHORITY, PATH_NODES, NODES);
 		sURIMatcher.addURI(AUTHORITY, PATH_NODES + "/#", NODES_ID);
+		sURIMatcher.addURI(AUTHORITY, PATH_TRACKNODES, TRACKNODES);
 	}
 
 	@Override
@@ -95,7 +101,7 @@ public class TracksContentProvider extends ContentProvider {
 		foreignKeys(sqlDB);
 		switch (sURIMatcher.match(uri)) {
 		case TRACK:
-			//ex. selection => NAME = ? AND FOO =? => selectionArgs: Baz, Boo (replace the qustions marks) 
+			//ex. selection => NAME = ? AND FOO =? => selectionArgs: Baz, Boo (replace the questions marks) 
 			noOfRowsDeleted = sqlDB.delete(TrackTable.TABLE_NAME, selection, selectionArgs);
 			break;
 		case TRACK_ID:
@@ -127,6 +133,9 @@ public class TracksContentProvider extends ContentProvider {
 		SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
 		Cursor cursor = null;
 		String id = "";
+		
+		String groupBy = null;
+		String having = null;
 		switch (sURIMatcher.match(uri)) {
 		case TRACK:
 			qBuilder.setTables(TrackTable.TABLE_NAME);
@@ -144,9 +153,21 @@ public class TracksContentProvider extends ContentProvider {
 			qBuilder.setTables(TrackNodesTable.TABLE_NAME);
 			selection = TrackNodesTable.COLUMN_ID + "=" + id;
 			break;
+		case TRACKNODES:
+			//qBuilder with cross table -- problem no tracks that have no nodes --> bad
+			//qBuilder.setTables(TrackTable.TABLE_NAME + ", " + TrackNodesTable.TABLE_NAME);
+			//qBuilder with LEFT OUTER JOIN gets also tracks with no nodes
+			qBuilder.setTables(TrackTable.TABLE_NAME 
+					+ " LEFT OUTER JOIN " 
+					+ TrackNodesTable.TABLE_NAME 
+					+ " ON (" 
+					+ TrackTable.TABLE_NAME + "." + TrackTable.COLUMN_ID 
+					+ " = "
+					+ TrackNodesTable.COLUMN_TRACKID
+					+ ")");
+			groupBy = TrackTable.TABLE_NAME + "." + TrackTable.COLUMN_ID;
 		}
-		//TODO: Howto pass Groupby and having?!
-		cursor = qBuilder.query(sqlDB, projection, selection, selectionArgs, null, null, sortOrder);
+		cursor = qBuilder.query(sqlDB, projection, selection, selectionArgs, groupBy, having, sortOrder);
 		//Set the notification URI for the cursor we return. This is needed for all loaders and observers
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 		return cursor;
