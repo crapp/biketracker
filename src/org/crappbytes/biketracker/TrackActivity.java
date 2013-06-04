@@ -18,7 +18,11 @@
 
 package org.crappbytes.biketracker;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import org.crappbytes.biketracker.YesCancelDialogFragment.YesCancelDialogListener;
 import org.crappbytes.biketracker.contentprovider.TracksContentProvider;
@@ -64,8 +68,9 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 	private String trackID;
 	private static final int LOADER_GENERAL = 1;
 	private static final int LOADER_FUNC = 2;
-	
-	//Interface Member 
+    private Timer zeroSpeedTimer;
+
+    //Interface Member
 	private final OnClickListener pauseRecListener = new OnClickListener() {
 		
 		@Override
@@ -115,16 +120,18 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 				}
 				//Show a toast 
 				Toast.makeText(getApplicationContext(), toastMsg,
-	                    Toast.LENGTH_SHORT).show();
-				GeoExportKML geoex = new GeoExportKML(getApplicationContext(), "foo.kml");
-				geoex.serializeDataToFile();
+                        Toast.LENGTH_SHORT).show();
 			}
 		});
 		
 		this.pauResButton = (Button) findViewById(R.id.butPauseTracking);
 		this.pauResButton.setOnClickListener(pauseRecListener);
-		
+
+        this.zeroSpeedTimer = new Timer();
+
+        //insert track in db
 		insertTrack();
+        //init async loaders
 		getLoaderManager().initLoader(LOADER_GENERAL, null, this);
 		getLoaderManager().initLoader(LOADER_FUNC, null, this);
 	}
@@ -274,6 +281,24 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 	    Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 	    startActivity(settingsIntent);
 	}
+
+    public Handler zeroSpeedHandler = new Handler() {
+
+        @Override
+        public void close() {
+
+        }
+
+        @Override
+        public void flush() {
+
+        }
+
+        @Override
+        public void publish(LogRecord logRecord) {
+
+        }
+    };
 	
 	//Here follow the methods we need to implement because of the GPSDialogListener interface
 	@Override
@@ -334,6 +359,7 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		switch (loader.getId()) {
 		case LOADER_GENERAL:
 			if (cursor != null && cursor.getCount() > 0) {
+                this.zeroSpeedTimer.cancel();
 				//the last element is important for us
 				cursor.moveToLast();
 				double height = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_ALTITUDE));
@@ -341,19 +367,22 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 				
 				//Update race time
 				long rTime = cursor.getLong(cursor.getColumnIndex(TrackNodesTable.COLUMN_RACETIME));
-				long hours = TimeUnit.MILLISECONDS.toHours(rTime);
-				long minutes = TimeUnit.MILLISECONDS.toMinutes(rTime) - (hours * 60);
-				long seconds = TimeUnit.MILLISECONDS.toMinutes(rTime) - (hours * 3600) - (minutes * 60);
+				long hours = TimeUnit.SECONDS.toHours(rTime);
+				long minutes = TimeUnit.SECONDS.toMinutes(rTime) - (hours * 60);
+				long seconds = TimeUnit.SECONDS.toMinutes(rTime) - (hours * 3600) - (minutes * 60);
+                //Toast.makeText(getBaseContext(),
+                //        "Race time: " + String.valueOf(rTime),
+                //        Toast.LENGTH_SHORT).show();
 				String shours = "";
 				//string must have at least two digits --> substring
-				shours = ("00" + String.valueOf(hours)).substring(String.valueOf(hours).length());
-				String sminutes = "";
-				sminutes = ("00" + String.valueOf(minutes)).substring(String.valueOf(minutes).length());
-				String sseconds = "";
-				sseconds = ("00" + String.valueOf(seconds)).substring(String.valueOf(seconds).length());
-				this.tvTime.setText(shours + ":" + sminutes + ":" + sseconds);
-				
-				//update height
+                shours = ("00" + String.valueOf(hours)).substring(String.valueOf(hours).length());
+                String sminutes = "";
+                sminutes = ("00" + String.valueOf(minutes)).substring(String.valueOf(minutes).length());
+                String sseconds = "";
+                sseconds = ("00" + String.valueOf(seconds)).substring(String.valueOf(seconds).length());
+                this.tvTime.setText(shours + ":" + sminutes + ":" + sseconds);
+
+                //update height
 				height = Utility.round(height, 1);
 				this.tvAltitude.setText(String.valueOf(height) + " m");
 				
@@ -361,7 +390,14 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 				speed = Utility.convertSpeed(speed);
 				speed = Utility.round(speed, 0);
 				this.tvSpeed.setText(String.valueOf(speed) + " km/h");
-				
+
+                //Use a timer to set displayed Speed to 0 after some time
+				zeroSpeedTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                    }
+                }, 10000);
 			}
 			break;
 		case LOADER_FUNC:

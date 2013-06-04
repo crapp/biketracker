@@ -20,6 +20,7 @@ package org.crappbytes.biketracker;
 
 import org.crappbytes.biketracker.TrackListFragment.onTrackSelectedListener;
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -82,8 +83,22 @@ public class TrackContainerActivity extends Activity implements onTrackSelectedL
 	}
 
 	@Override
-	public void onTrackSelected(int position) {
+	public void onTrackSelected(long id) {
 		//TODO: Switch Fragments and tell the new fragment which position was selected
-		
+		TrackListDetailFragment tldFrag = new TrackListDetailFragment();
+        Bundle args = new Bundle();
+        args.putLong(TrackListDetailFragment.ARG_POSITION, id);
+        tldFrag.setArguments(args);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.fragment_container, tldFrag);
+        transaction.addToBackStack(null);
+
+        //TODO: Nice to have would be a card flip animation
+
+        transaction.commit();
 	}
 }

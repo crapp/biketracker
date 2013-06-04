@@ -25,7 +25,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TrackDBHelper extends SQLiteOpenHelper {
 	
-	private static final String DATABASE_NAME = "biketracker.sqlite";
+	private static final String DATABASE_NAME = "biketracker.db";
 	private static final int DATABASE_VERSION = 1;
 
 	public TrackDBHelper(Context context, String name, CursorFactory factory,

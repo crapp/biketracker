@@ -25,7 +25,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +36,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.text.AlteredCharSequence;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -52,9 +50,9 @@ public class GPSLoggerBackgroundService extends Service {
 	private NotificationManager notiManager;
 	private LowPassFilter lpf;
 	//TODO: make this values configurable!!
-	private long minTimeMs = 2000; //get update every x seconds
-	private long minDistance = 5; //Minimum distance between two points in meters?! Or the min distance loc manager will get an update. 
-	private float minAccuracy = 35; //Minimum accuracy to store the gps position
+	private long minTimeMs = 1000; //get update every x seconds
+	private long minDistance = 5; //Minimum distance between two points in meters?! Or the min distance loc manager will get an update.
+	private float minAccuracy = 20; //Minimum accuracy to store the gps position
 	private String trackName;
 	private int trackID;
 	private Location prevLoc;
@@ -111,7 +109,7 @@ public class GPSLoggerBackgroundService extends Service {
 			Log.e(getPackageName(), ex.getStackTrace().toString());
 		}
 	}
-	
+
 	private final LocationListener listener = new LocationListener() {
 
 		@Override
@@ -120,14 +118,14 @@ public class GPSLoggerBackgroundService extends Service {
 			//http://stackoverflow.com/questions/2463175/how-to-have-android-service-communicate-with-activity
 			if (location.getAccuracy() <= minAccuracy) {
 				//hoooray we can use this one
-				
+
 				double[] altiAscDesc = {location.getAltitude(), 0, 0};
 				double distance = 0;
-				
+
 				if (lpf == null) {
 					lpf = new LowPassFilter(location.getAltitude());
 				}
-				
+
 				//calculate distance to previous node now and store in db
 				if (prevLoc != null) {
 					//compute distance to previous location
@@ -135,25 +133,32 @@ public class GPSLoggerBackgroundService extends Service {
 							prevLoc.getLongitude(),
 							location.getLatitude(),
 							location.getLongitude());
-					
+
 					altiAscDesc = lpf.applyFilter(location.getAltitude());
+                    String altiAsDes = "AltiAsDes: ";
+                    for (double d : altiAscDesc) {
+                        altiAsDes += String.valueOf(d) + ", ";
+                    }
+                    Toast.makeText(getBaseContext(),
+                            altiAsDes,
+                            Toast.LENGTH_SHORT).show();
 				}
-				
+
 				//calculate race time now and store in db
 				if (unixTime != 0) {
 					//get seconds since epoche
 					long newUnixTime = System.currentTimeMillis() / 1000L;
 					long timeDelta = newUnixTime - unixTime;
-					//only store if 
-					if (timeDelta <= 10) { 
+					//only store if
+					if (timeDelta <= 10) {
 						raceTime += timeDelta;
 					}
 					unixTime = newUnixTime;
 				} else {
 					unixTime = System.currentTimeMillis() / 1000L;
 				}
-				
-				//save location as previous location. 
+
+				//save location as previous location.
 				prevLoc = location;
 				ContentValues cv = new ContentValues();
 				cv.put(TrackNodesTable.COLUMN_TRACKID, trackID);
@@ -181,14 +186,14 @@ public class GPSLoggerBackgroundService extends Service {
 		public void onProviderDisabled(String provider) {
 			Toast.makeText(getBaseContext(), "onProviderDisabled: " + provider,
                     Toast.LENGTH_SHORT).show();
-			
+
 		}
 
 		@Override
 		public void onProviderEnabled(String provider) {
 			Toast.makeText(getBaseContext(), "onProviderEnabled: " + provider,
                     Toast.LENGTH_SHORT).show();
-			
+
 		}
 
 		@Override
@@ -198,7 +203,7 @@ public class GPSLoggerBackgroundService extends Service {
 					", status " + String.valueOf(status),
                     Toast.LENGTH_SHORT).show();
 		}
-		
+
     };
 
 	@Override

@@ -29,17 +29,22 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class TrackListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
 	
 	public interface onTrackSelectedListener {
-		public void onTrackSelected(int position);
+		public void onTrackSelected(long id);
 	}
 	
 	private onTrackSelectedListener activityCallback;
@@ -63,9 +68,9 @@ public class TrackListFragment extends ListFragment implements LoaderCallbacks<C
         pBar.setIndeterminate(true);
         
 		
-		adapter = new CustomListAdapter(getActivity(), null, 0);
+		adapter = new CustomListAdapter(getActivity().getApplicationContext(), null, 0);
 		setListAdapter(adapter);
-		
+
 		// Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
 		getLoaderManager().initLoader(0, null, this);
@@ -76,6 +81,9 @@ public class TrackListFragment extends ListFragment implements LoaderCallbacks<C
 		super.onActivityCreated(savedInstanceState);
 		
 		getListView().setEmptyView(pBar);
+
+        //we registering our listview for longpress context menu
+        registerForContextMenu(getListView());
 	}
 
 	@Override
@@ -84,7 +92,37 @@ public class TrackListFragment extends ListFragment implements LoaderCallbacks<C
 		super.onPause();
 	}
 
-	@Override
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.tracklist_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.tracklst_context_del:
+                int delete = getActivity().getContentResolver().delete(TracksContentProvider.CONTENT_URI_TRACK,
+                        TrackTable.COLUMN_ID + "=?",
+                        new String[]{String.valueOf(info.id)});
+                if (delete > 0) {
+                    Toast.makeText(getActivity(),
+                            "Deleted one Track",
+                            Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.tracklst_context_show:
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+
+    @Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
@@ -104,9 +142,9 @@ public class TrackListFragment extends ListFragment implements LoaderCallbacks<C
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		
+
 		// Notify the container activity of selected item
-        this.activityCallback.onTrackSelected(position);
+        this.activityCallback.onTrackSelected(id);
 	}
 
 	@Override

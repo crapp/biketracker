@@ -120,6 +120,8 @@ public class TracksContentProvider extends ContentProvider {
 		}
 		//Notify all Observers (Loaders) about the database change 
 		getContext().getContentResolver().notifyChange(uri, null);
+        //TODO: Nasty hack to inform all TRACKNODES listeners as we only delete from TRACKS because of the database on delete cascade constraint
+        getContext().getContentResolver().notifyChange(TracksContentProvider.CONTENT_URI_TRACKNODES, null);
 		return noOfRowsDeleted;
 	}
 

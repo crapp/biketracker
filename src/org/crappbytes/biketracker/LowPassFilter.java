@@ -31,6 +31,13 @@ public class LowPassFilter {
 	{
 		// return array for ascend and descend
 		double[] ascDesc = {currentAltitude, 0, 0};
+        //handle great differences
+        //TODO: Watch this closely!!
+//        if (currentAltitude - this.previousAltitude > 10 || this.previousAltitude - currentAltitude > 10) {
+//            this.smoothedAltitude = currentAltitude;
+//            this.previousAltitude = this.smoothedAltitude;
+//            return ascDesc;
+//        }
 		//TODO: Make smoothing factor configurable
 		this.smoothedAltitude += (currentAltitude - this.smoothedAltitude) / 20.0;
 		if (this.previousAltitude > this.smoothedAltitude)

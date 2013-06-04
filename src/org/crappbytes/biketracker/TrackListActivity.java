@@ -35,7 +35,8 @@ import android.support.v4.app.NavUtils;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-public class TrackListActivity extends ListActivity implements LoaderCallbacks<Cursor> {
+public class
+        TrackListActivity extends ListActivity implements LoaderCallbacks<Cursor> {
 	
 	//Members area
 	// This is the Adapter being used to display the list's data

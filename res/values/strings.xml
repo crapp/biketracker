@@ -23,6 +23,20 @@
     <string name="title_activity_track_list">List of tracks</string>
     <string name="noTracksInDB">No Tracks so far, go back and record one :)</string>
     <string name="title_activity_track_container">TrackContainerActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="delete">Delete</string>
+    <string name="show">Show</string>
+    <string name="trackDetailTimeBegin">Begin:</string>
+    <string name="trackDetailTimeEnd">End:</string>
+    <string name="altitudeAscend">Ascend:</string>
+    <string name="altitudeDescend">Descend:</string>
+    <string name="altitudeMax">Max:</string>
+    <string name="altitudeMin">Min:</string>
+    <string name="speedAverage">Average:</string>
+    <string name="edit">Edit</string>
+    <string name="export">Export</string>
+    <string name="exportkml">Export KML</string>
+    <string name="exportgpx">Export GPX</string>
+    <string name="exportKMLTitle">Exporting Track as KML</string>
+    <string name="exportKMLMessage">Writing Track %1$s to sdcard \n Please wait...</string>
 
 </resources>

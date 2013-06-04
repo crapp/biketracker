@@ -1,3 +1,21 @@
+/*
+ *  BikeTracker is an Android Application.
+ *  Copyright (C) 2013  Christian Rapp
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.crappbytes.biketracker;
 
 import java.text.DateFormat;
@@ -18,7 +36,7 @@ import android.widget.TextView;
 
 public class CustomListAdapter extends CursorAdapter {
 
-	private Context ctxt;
+	private Context ctxt; //application context
 	private Cursor cursor;
 	private int passedFlags;
 	
@@ -36,9 +54,18 @@ public class CustomListAdapter extends CursorAdapter {
 			TextView dist = (TextView) view.findViewById(R.id.rowTrackDistance);
 			TextView altUp = (TextView) view.findViewById(R.id.rowTrackTotalHeight);
 			TextView date = (TextView) view.findViewById(R.id.rowTrackDate);
+            //TODO: I really don't need hungarian notation :(
 			String sName = cursor.getString(cursor.getColumnIndex(TrackTable.COLUMN_NAME));
-			String sDist = cursor.getString(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_DISTANCE));
-			String sAltUp = cursor.getString(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_ALTITUDEUP));
+            String sDist = "0";
+            if (!cursor.isNull(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_DISTANCE))) {
+                double dDist = Utility.round(cursor.getDouble(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_DISTANCE)), 2);
+			    sDist = String.valueOf(dDist);
+            }
+            String sAltUp = "0";
+            if (!cursor.isNull(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_ALTITUDEUP))) {
+                int iAltUp = cursor.getInt(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_ALTITUDEUP));
+			    sAltUp = String.valueOf(iAltUp);
+            }
 			String sDate = cursor.getString(cursor.getColumnIndex(TrackTable.COLUMN_TIMESTAMP));
 			
 			
