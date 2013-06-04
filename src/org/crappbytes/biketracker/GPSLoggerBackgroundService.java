@@ -139,9 +139,9 @@ public class GPSLoggerBackgroundService extends Service {
                     for (double d : altiAscDesc) {
                         altiAsDes += String.valueOf(d) + ", ";
                     }
-                    Toast.makeText(getBaseContext(),
-                            altiAsDes,
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getBaseContext(),
+//                            altiAsDes,
+//                            Toast.LENGTH_SHORT).show();
 				}
 
 				//calculate race time now and store in db
