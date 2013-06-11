@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".TrackActivity" >
 	
     <LinearLayout 
@@ -77,12 +78,12 @@
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
-        android:layout_below="@id/topLinearL" 
-        android:layout_width="match_parent"
+            android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" 
         android:orientation="horizontal" 
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:layout_below="@+id/topLinearL">
         <!-- baselineAligned=false for better performance!? -->
         <RelativeLayout 
             android:id="@+id/relDistance"
@@ -98,7 +99,7 @@
                 android:textSize="13sp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content" />
-            <RelativeLayout 
+            <RelativeLayout
                 android:layout_below="@id/tvLabelDistance"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent">
@@ -147,8 +148,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+        android:layout_height="match_parent"
+        android:gravity="bottom">
         <Button 
             android:id="@+id/butStopTracking"
             android:layout_height="wrap_content"
@@ -166,4 +167,4 @@
             android:drawableLeft="@drawable/ic_button_pause"/>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

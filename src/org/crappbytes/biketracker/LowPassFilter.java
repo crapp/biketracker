@@ -21,10 +21,12 @@ package org.crappbytes.biketracker;
 public class LowPassFilter {
 	private double smoothedAltitude;
 	private double previousAltitude;
+    private double smoothingFactor;
 	
-	public LowPassFilter(double altitude) {
+	public LowPassFilter(double altitude, double smoothingFactor) {
 		this.smoothedAltitude = altitude;
 		this.previousAltitude = altitude;
+        this.smoothingFactor = smoothingFactor;
 	}
 	
 	double[] applyFilter(double currentAltitude)
@@ -38,8 +40,7 @@ public class LowPassFilter {
 //            this.previousAltitude = this.smoothedAltitude;
 //            return ascDesc;
 //        }
-		//TODO: Make smoothing factor configurable
-		this.smoothedAltitude += (currentAltitude - this.smoothedAltitude) / 20.0;
+		this.smoothedAltitude += (currentAltitude - this.smoothedAltitude) / this.smoothingFactor;
 		if (this.previousAltitude > this.smoothedAltitude)
 		{
 			ascDesc[2] = this.previousAltitude - this.smoothedAltitude; 

@@ -20,18 +20,25 @@ package org.crappbytes.biketracker;
 
 import org.crappbytes.biketracker.TrackDialogFragment.TrackDialogListener;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.dropbox.sync.android.DbxAccountManager;
+
 public class MainActivity extends Activity implements TrackDialogListener{
-	
+
+    private DbxAccountManager dbxAccManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +51,8 @@ public class MainActivity extends Activity implements TrackDialogListener{
             ActionBar actionBar = getActionBar();
             actionBar.setHomeButtonEnabled(false);
         }
-        
+
+        //get our buttons and assign onClickListener to them
         Button butNewTrack = (Button) findViewById(R.id.butStartTracking);
         butNewTrack.setOnClickListener(new View.OnClickListener() {			
 			@Override
@@ -63,6 +71,16 @@ public class MainActivity extends Activity implements TrackDialogListener{
 		        startActivity(trackListIntent);
 			}
 		});
+
+        //set default values for our application
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        //read from preferences if we should activate dropbox sync
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean dropbox = sharedPrefs.getBoolean("pref_syncDropbox", false);
+        if (dropbox) {
+            //this.dropboxSync(dropbox);
+        }
     }
 
 
@@ -73,8 +91,19 @@ public class MainActivity extends Activity implements TrackDialogListener{
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
-	@Override
+    @Override
 	public void onDialogPositiveClick(DialogFragment dialog, String trackName) {
 		Intent intNewTrack = new Intent(MainActivity.this, TrackActivity.class);
 		intNewTrack.putExtra("org.crappbytes.TrackName", trackName);
@@ -87,5 +116,13 @@ public class MainActivity extends Activity implements TrackDialogListener{
 		// TODO Auto-generated method stub
 		
 	}
-    
+
+    private void dropboxSync(boolean enable) {
+        if (enable) {
+            if (this.dbxAccManager == null) {
+                //FIXME: How to handle the app key/secret in oss???
+                //FIXME: What for do we need dropbox support? Export tracks to dropbox? Syncing app db directly is highly discouraged!
+            }
+        }
+    }
 }

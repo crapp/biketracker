@@ -19,16 +19,11 @@
 package org.crappbytes.biketracker;
 
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
 import org.crappbytes.biketracker.YesCancelDialogFragment.YesCancelDialogListener;
 import org.crappbytes.biketracker.contentprovider.TracksContentProvider;
 import org.crappbytes.biketracker.database.TrackNodesTable;
 import org.crappbytes.biketracker.database.TrackTable;
-import org.crappbytes.biketracker.export.GeoExportKML;
 
 import android.app.ActionBar;
 import android.app.DialogFragment;
@@ -121,6 +116,8 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 				//Show a toast 
 				Toast.makeText(getApplicationContext(), toastMsg,
                         Toast.LENGTH_SHORT).show();
+                ValueDialogFragment vdf = new ValueDialogFragment();
+                vdf.show(getFragmentManager(), "altitudefragment");
 			}
 		});
 		

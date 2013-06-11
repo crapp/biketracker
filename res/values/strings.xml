@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Bike Tracker</string>
-    <string name="action_settings">Settings</string>
+    <string name="settings">Settings</string>
     <string name="butStartTracking">Start Tracking</string>
     <string name="butShowTracks">Show Tracks</string>
     <string name="title_activity_track">Track Stats</string>
@@ -38,5 +38,7 @@
     <string name="exportgpx">Export GPX</string>
     <string name="exportKMLTitle">Exporting Track as KML</string>
     <string name="exportKMLMessage">Writing Track %1$s to sdcard \n Please wait...</string>
+    <!--preferences-->
+    <string name="prefGPS">GPS</string>
 
 </resources>

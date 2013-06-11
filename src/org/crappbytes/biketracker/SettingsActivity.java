@@ -18,14 +18,43 @@
 
 package org.crappbytes.biketracker;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 /**
  * Created by saedelaere on 04.06.13.
  */
 public class SettingsActivity extends Activity {
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_settings);
+
+        //get action bar and set ancestral navigation
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        //instantiate fragment
+        SettingsFragment sFrag = new SettingsFragment();
+
+        //use transcation manager to load fragment
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, sFrag).commit();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                Intent mainActivity = new Intent(this, MainActivity.class);
+                startActivity(mainActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/prefGPS">
+        <EditTextPreference
+                android:key="pref_accuracy"
+                android:title="Minimum Accuracy"
+                android:inputType="number"
+                android:defaultValue="20"/>
+        <EditTextPreference
+                android:key="pref_pollTime"
+                android:title="Polling interval"
+                android:inputType="number"
+                android:defaultValue="1"/>
+        <EditTextPreference
+                android:key="pref_mindistance"
+                android:title="Minimum distance"
+                android:inputType="number"
+                android:defaultValue="5"/>
+        <EditTextPreference
+                android:key="pref_lpf"
+                android:title="Altitude filter"
+                android:inputType="number"
+                android:defaultValue="20"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Sync and Export">
+        <EditTextPreference
+                android:key="pref_folder"
+                android:title="Folder to export Tracks"
+                android:inputType="text"
+                android:defaultValue="biketracker"/>
+        <CheckBoxPreference
+                android:key="pref_syncDropbox"
+                android:title="Sync database with dropbox"
+                android:defaultValue="false"/>
+    </PreferenceCategory>
+</PreferenceScreen>

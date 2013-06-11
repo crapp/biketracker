@@ -56,7 +56,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.crappbytes.biketracker.MainActivity" />
         </activity>
-        <activity android:name=".SettingsActivity"/>
+        <activity android:name="org.crappbytes.biketracker.SettingsActivity"
+                android:label="@string/settings"/>
 
         <service
             android:name="org.crappbytes.biketracker.GPSLoggerBackgroundService"

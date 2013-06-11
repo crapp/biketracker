@@ -28,6 +28,7 @@ import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
@@ -35,6 +36,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -114,16 +116,16 @@ public class GPSLoggerBackgroundService extends Service {
 
 		@Override
 		public void onLocationChanged(Location location) {
-			// TODO Write to DB and notify UI
-			//http://stackoverflow.com/questions/2463175/how-to-have-android-service-communicate-with-activity
 			if (location.getAccuracy() <= minAccuracy) {
 				//hoooray we can use this one
 
 				double[] altiAscDesc = {location.getAltitude(), 0, 0};
 				double distance = 0;
-
 				if (lpf == null) {
-					lpf = new LowPassFilter(location.getAltitude());
+                    //get smoothing factor from preferences file
+                    SharedPreferences prefShared = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    String smoothingfactor = prefShared.getString("pref_lpf", "20");
+					lpf = new LowPassFilter(location.getAltitude(), Double.parseDouble(smoothingfactor));
 				}
 
 				//calculate distance to previous node now and store in db
