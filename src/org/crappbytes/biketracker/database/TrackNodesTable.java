@@ -28,8 +28,8 @@ public class TrackNodesTable {
 	public static final String COLUMN_ACCURACY = "accuracy";
 	public static final String COLUMN_ALTITUDE = "altitude";
 	public static final String COLUMN_ALTITUDELPF = "altitudelpf"; //smoothed altitude using a lpf
-	public static final String COLUMN_ALTITUDEUP = "altitudeup"; 
-	public static final String COLUMN_ALTITUDEDOWN = "altitudedown";
+	public static final String COLUMN_ALTITUDEUP = "altitudeup"; // calculation based on lpf altitude
+	public static final String COLUMN_ALTITUDEDOWN = "altitudedown"; // calculation based on lpf altitude
 	public static final String COLUMN_BEARING = "bearing";
 	public static final String COLUMN_LATITUDE = "latitude";
 	public static final String COLUMN_LONGITUDE = "longitude";

@@ -31,3 +31,9 @@ proguard/
 #MacOS related files
 .DS_Store
 
+# Android Studio
+.gradle
+/build
+*~
+*.swp
+

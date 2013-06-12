@@ -18,7 +18,7 @@
 
 package org.crappbytes.biketracker;
 
-import org.crappbytes.biketracker.TrackDialogFragment.TrackDialogListener;
+import org.crappbytes.biketracker.TrackNameDialogFragment.TrackDialogListener;
 
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements TrackDialogListener{
         butNewTrack.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				DialogFragment trackDialog = new TrackDialogFragment();
+				DialogFragment trackDialog = new TrackNameDialogFragment();
 				trackDialog.show(getFragmentManager(), "trackdialog");
 			}
 		});

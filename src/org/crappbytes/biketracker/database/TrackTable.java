@@ -26,13 +26,15 @@ public class TrackTable {
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_NAME = "name";
 	public static final String COLUMN_MODIFIED = "modified";
-	public static final String COLUMN_TIMESTAMP = "timestamp";
+    public static final String COLLUMN_LPF = "lowpassfilter";
+ 	public static final String COLUMN_TIMESTAMP = "timestamp";
 	
 	//Table create String
 	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME
 			+ " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
 			+ COLUMN_NAME + " TEXT NOT NULL, "
 			+ COLUMN_MODIFIED + " DATETIME DEFAULT NULL, "
+            + COLLUMN_LPF + " TEXT NOT NULL, "
 			+ COLUMN_TIMESTAMP + " DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)";
 	
 	public static void onCreate(SQLiteDatabase db) {

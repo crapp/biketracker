@@ -33,7 +33,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-public class TrackDialogFragment extends DialogFragment {
+public class TrackNameDialogFragment extends DialogFragment {
 	
 	/* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
@@ -81,13 +81,13 @@ public class TrackDialogFragment extends DialogFragment {
 	    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 	    		   @Override
 	    		   public void onClick(DialogInterface dialog, int id) {
-	    			   tdListener.onDialogPositiveClick(TrackDialogFragment.this, newTrackName.getText().toString());
+	    			   tdListener.onDialogPositiveClick(TrackNameDialogFragment.this, newTrackName.getText().toString());
 	    		   }
 	    	   })
 	    	   .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the negative button event back to the host activity
-                	   tdListener.onDialogNegativeClick(TrackDialogFragment.this);
+                	   tdListener.onDialogNegativeClick(TrackNameDialogFragment.this);
                    }
                });
 	    newTrackName = (EditText)builderView.findViewById(R.id.nameNewTrack);

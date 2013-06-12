@@ -124,7 +124,7 @@ public class GPSLoggerBackgroundService extends Service {
 				if (lpf == null) {
                     //get smoothing factor from preferences file
                     SharedPreferences prefShared = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    String smoothingfactor = prefShared.getString("pref_lpf", "20");
+                    String smoothingfactor = prefShared.getString("pref_lpf", "25");
 					lpf = new LowPassFilter(location.getAltitude(), Double.parseDouble(smoothingfactor));
 				}
 

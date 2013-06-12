@@ -9,8 +9,10 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 public class TracksContentProvider extends ContentProvider {
 
@@ -74,7 +76,7 @@ public class TracksContentProvider extends ContentProvider {
 		SQLiteDatabase sqlDB = db.getWritableDatabase();
 		foreignKeys(sqlDB);
 		long id = 0;
-		switch (uriType) {
+        switch (uriType) {
 		case TRACK:
 			id = sqlDB.insert(TrackTable.TABLE_NAME, null, values);
 			returnUri = Uri.parse(PATH_TRACK + "/" + id);
@@ -97,8 +99,15 @@ public class TracksContentProvider extends ContentProvider {
 		int noOfRowsDeleted = 0;
 		//string that holds the ID if uri = *_ID
 		String id = "";
-		SQLiteDatabase sqlDB = db.getWritableDatabase();
-		foreignKeys(sqlDB);
+        SQLiteDatabase sqlDB = null;
+        try {
+		    sqlDB = db.getWritableDatabase();
+        }
+        catch(SQLiteException ex) {
+            Log.e(getPackageName(), ex.getStackTrace().toString());
+            return 0;
+        }
+        foreignKeys(sqlDB);
 		switch (sURIMatcher.match(uri)) {
 		case TRACK:
 			//ex. selection => NAME = ? AND FOO =? => selectionArgs: Baz, Boo (replace the questions marks) 

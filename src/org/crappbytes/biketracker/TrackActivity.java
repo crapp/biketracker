@@ -33,14 +33,17 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +67,8 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 	private static final int LOADER_GENERAL = 1;
 	private static final int LOADER_FUNC = 2;
     private Timer zeroSpeedTimer;
+
+    private SharedPreferences sharedPrefs;
 
     //Interface Member
 	private final OnClickListener pauseRecListener = new OnClickListener() {
@@ -94,8 +99,9 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		//Intent is a connection between Activities
+		//Intent is a connection between Activities - naja
 		Intent intent = getIntent();
+        // get the track name defined in the TrackNameDialogFragment
 		this.trackName = intent.getStringExtra("org.crappbytes.TrackName");
 		
 		this.tvAltitude = (TextView) findViewById(R.id.tvAlt);
@@ -125,6 +131,8 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		this.pauResButton.setOnClickListener(pauseRecListener);
 
         //this.zeroSpeedTimer = new Timer();
+
+        this.sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         //insert track in db
 		insertTrack();
@@ -248,20 +256,26 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 	 * Insert new Track into Database
 	 */
 	private void insertTrack() {
-		if (Integer.parseInt(this.trackID) > 0) {
-			Cursor cursor = getContentResolver().query(TracksContentProvider.CONTENT_URI_TRACK,
-					new String[]{TrackTable.COLUMN_ID},
-					TrackTable.COLUMN_ID + "=?",
-					new String[] {this.trackID},
-					null);
-			if (cursor != null && cursor.getCount() > 0) {
-				//ups the track is already in the database -> fetch data
-				return;
-			}
-		}
+        try {
+            if (Integer.parseInt(this.trackID) > 0) {
+                Cursor cursor = getContentResolver().query(TracksContentProvider.CONTENT_URI_TRACK,
+                        new String[]{TrackTable.COLUMN_ID},
+                        TrackTable.COLUMN_ID + "=?",
+                        new String[] {this.trackID},
+                        null);
+                if (cursor != null && cursor.getCount() > 0) {
+                    //ups the track is already in the database -> fetch data
+                    return;
+                }
+            }
+        }
+        catch (NumberFormatException ex) {
+            Log.e(getPackageName(), ex.getStackTrace().toString());
+        }
 		ContentValues cv = new ContentValues();
-		//all we need to provide is the trackname
+		//all we need to provide is the trackname and the lpf
 		cv.put(TrackTable.COLUMN_NAME, this.trackName);
+        cv.put(TrackTable.COLLUMN_LPF, this.sharedPrefs.getString("pref_lpf", "25"));
 		Uri url = getContentResolver().insert(TracksContentProvider.CONTENT_URI_TRACK, cv);
 		//the last element of the Uri returned by insert is the ID. Store it as we need to pass it to the background service
 		this.trackID = url.getLastPathSegment();
