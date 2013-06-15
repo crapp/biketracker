@@ -275,7 +275,7 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		ContentValues cv = new ContentValues();
 		//all we need to provide is the trackname and the lpf
 		cv.put(TrackTable.COLUMN_NAME, this.trackName);
-        cv.put(TrackTable.COLLUMN_LPF, this.sharedPrefs.getString("pref_lpf", "25"));
+        cv.put(TrackTable.COLLUMN_LPF, this.sharedPrefs.getString(SettingsFragment.PREF_LPF, "25"));
 		Uri url = getContentResolver().insert(TracksContentProvider.CONTENT_URI_TRACK, cv);
 		//the last element of the Uri returned by insert is the ID. Store it as we need to pass it to the background service
 		this.trackID = url.getLastPathSegment();

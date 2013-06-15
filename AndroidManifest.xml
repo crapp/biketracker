@@ -41,14 +41,6 @@
                 android:value="org.crappbytes.biketracker.MainActivity" />
         </activity>
         <activity
-            android:name="org.crappbytes.biketracker.TrackListActivity"
-            android:label="@string/title_activity_track_list"
-            android:parentActivityName="org.crappbytes.biketracker.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.crappbytes.biketracker.MainActivity" />
-        </activity>
-        <activity
             android:name="org.crappbytes.biketracker.TrackContainerActivity"
             android:label="@string/title_activity_track_container"
             android:parentActivityName="org.crappbytes.biketracker.MainActivity" >

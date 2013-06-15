@@ -26,7 +26,10 @@ import android.preference.PreferenceFragment;
  */
 public class SettingsFragment extends PreferenceFragment {
 
-
+    public static final String PREF_ACCURACY  = "pref_accuracy";
+    public static final String PREF_POLLTIME = "pref_polltime";
+    public static final String PREF_LPF = "pref_lpf";
+    public static final String PREF_MINDISTANCE = "pref_mindistance";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

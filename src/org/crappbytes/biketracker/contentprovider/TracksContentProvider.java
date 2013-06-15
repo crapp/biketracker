@@ -8,6 +8,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -73,7 +74,15 @@ public class TracksContentProvider extends ContentProvider {
 	public synchronized Uri insert(Uri uri, ContentValues values) {
 		Uri returnUri = null;
 		int uriType = sURIMatcher.match(uri);
-		SQLiteDatabase sqlDB = db.getWritableDatabase();
+        SQLiteDatabase sqlDB = null;
+        try {
+            sqlDB = db.getWritableDatabase();
+        }
+        catch(SQLiteException ex) {
+            //not possible to get the package name here :/
+            Log.e("", ex.getStackTrace().toString());
+            return returnUri;
+        }
 		foreignKeys(sqlDB);
 		long id = 0;
         switch (uriType) {
@@ -104,7 +113,8 @@ public class TracksContentProvider extends ContentProvider {
 		    sqlDB = db.getWritableDatabase();
         }
         catch(SQLiteException ex) {
-            Log.e(getPackageName(), ex.getStackTrace().toString());
+            //not possible to get the package name here :/
+            Log.e("", ex.getStackTrace().toString());
             return 0;
         }
         foreignKeys(sqlDB);
@@ -138,7 +148,16 @@ public class TracksContentProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
 		//TODO: In the tut, vogella checked whether all the requested columns really exist. Not needed?!!? I mean this is a non public provider
-		SQLiteDatabase sqlDB = db.getWritableDatabase();
+        SQLiteDatabase sqlDB = null;
+        try {
+            //we only need a readable database here
+            sqlDB = db.getReadableDatabase();
+        }
+        catch(SQLiteException ex) {
+            //not possible to get the package name here :/
+            Log.e("", ex.getStackTrace().toString());
+            return null;
+        }
 		
 		//Using an SQLiteQueryBuilder rather than query()
 		SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
@@ -189,7 +208,15 @@ public class TracksContentProvider extends ContentProvider {
 			String selection, String[] selectionArgs) {
 		int affectedRows = 0;
 		String id = "";
-		SQLiteDatabase sqlDB = db.getWritableDatabase();
+        SQLiteDatabase sqlDB = null;
+        try {
+            sqlDB = db.getWritableDatabase();
+        }
+        catch(SQLiteException ex) {
+            //not possible to get the package name here :/
+            Log.e("", ex.getStackTrace().toString());
+            return affectedRows;
+        }
 		foreignKeys(sqlDB);
 		switch(sURIMatcher.match(uri)) {
 		case TRACK:
@@ -216,7 +243,13 @@ public class TracksContentProvider extends ContentProvider {
 	}
 	
 	private void foreignKeys(SQLiteDatabase sqlDB) {
-		sqlDB.execSQL("PRAGMA foreign_keys = ON;");
+        try {
+		    sqlDB.execSQL("PRAGMA foreign_keys = ON;");
+        }
+        catch(SQLException ex) {
+            //not possible to get the package name here :/
+            Log.e("", ex.getStackTrace().toString());
+        }
 	}
 
 }

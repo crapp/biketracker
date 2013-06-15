@@ -50,9 +50,10 @@ public class GPSLoggerBackgroundService extends Service {
 
 	private LocationManager locManager;
 	private NotificationManager notiManager;
+    private SharedPreferences prefShared;
 	private LowPassFilter lpf;
 	//TODO: make this values configurable!!
-	private long minTimeMs = 1000; //get update every x seconds
+	private long polltime = 1000; //get update every x seconds
 	private long minDistance = 5; //Minimum distance between two points in meters?! Or the min distance loc manager will get an update.
 	private float minAccuracy = 20; //Minimum accuracy to store the gps position
 	private String trackName;
@@ -66,7 +67,7 @@ public class GPSLoggerBackgroundService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		try {
-			
+
 			this.prevLoc = null;
 			this.unixTime = 0;
 			this.raceTime = 0;
@@ -81,10 +82,16 @@ public class GPSLoggerBackgroundService extends Service {
 			}
 			
 			this.lpf = null;
-			
+
+            this.prefShared = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            this.polltime = Long.parseLong(this.prefShared.getString(SettingsFragment.PREF_POLLTIME, "1")) * 1000;
+            this.minDistance = Long.parseLong(this.prefShared.getString(SettingsFragment.PREF_MINDISTANCE, "5"));
+            this.minAccuracy = Float.parseFloat(this.prefShared.getString(SettingsFragment.PREF_ACCURACY, "20"));
+
+
 			locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 
-					this.minTimeMs, 
+					this.polltime,
 					this.minDistance,
 					this.listener);
 			
@@ -123,8 +130,7 @@ public class GPSLoggerBackgroundService extends Service {
 				double distance = 0;
 				if (lpf == null) {
                     //get smoothing factor from preferences file
-                    SharedPreferences prefShared = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    String smoothingfactor = prefShared.getString("pref_lpf", "25");
+                    String smoothingfactor = prefShared.getString(SettingsFragment.PREF_LPF, "25");
 					lpf = new LowPassFilter(location.getAltitude(), Double.parseDouble(smoothingfactor));
 				}
 

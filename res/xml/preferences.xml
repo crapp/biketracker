@@ -22,7 +22,7 @@
                 android:key="pref_lpf"
                 android:title="Altitude filter"
                 android:inputType="number"
-                android:defaultValue="20"/>
+                android:defaultValue="25"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Sync and Export">
