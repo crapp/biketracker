@@ -122,7 +122,7 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 				//Show a toast 
 				Toast.makeText(getApplicationContext(), toastMsg,
                         Toast.LENGTH_SHORT).show();
-                ValueDialogFragment vdf = new ValueDialogFragment();
+                DialogFragment vdf = new ValueDialogFragment();
                 vdf.show(getFragmentManager(), "altitudefragment");
 			}
 		});

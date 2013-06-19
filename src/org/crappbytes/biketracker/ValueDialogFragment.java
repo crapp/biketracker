@@ -33,6 +33,10 @@ import android.view.View;
  */
 
 public class ValueDialogFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    public static final int ALTITUDE = 10;
+    public static final int SPEED = 20;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle args = getArguments();
@@ -47,7 +51,7 @@ public class ValueDialogFragment extends DialogFragment implements LoaderManager
         View builderView = inflater.inflate(R.layout.fragment_values_dialog_altitude, null);
         builder.setView(builderView);
 
-
+        builder.setPositiveButton("Ok", null);
 
         return builder.create();
     }

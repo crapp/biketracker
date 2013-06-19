@@ -10,27 +10,86 @@
             android:text="@string/altitude"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:textStyle="bold"
+            android:textStyle="italic"
             />
+
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Hello world"/>
+    <!--
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="6dp"
             android:layout_marginTop="15dp"
-            android:src="@drawable/horizontal_line"/>
+            android:src="@drawable/horizontal_line"/>-->
+
 
     <RelativeLayout
             android:id="@+id/value_altitude_rel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100px"
             android:layout_marginTop="10dp"
-            android:padding="5dp"
-            android:background="@drawable/roundcorners_shadow_laylist">
+            android:padding="5dp">
+        <!--android:background="@drawable/roundcorners_shadow_laylist"-->
         <TextView
+                android:id="@+id/value_altitude_minlabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="@string/altitudeMin"/>
+        <TextView
+                android:id="@+id/value_altitude_minvalue"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignBaseline="@id/value_altitude_minlabel"
+                android:layout_alignBottom="@id/value_altitude_minlabel"
+                android:layout_toRightOf="@id/value_altitude_minlabel"/>
+        <TextView
+                android:id="@+id/value_altitude_maxlabel"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/value_altitude_minlabel"
+                android:textStyle="bold"
+                android:text="@string/altitudeMax"/>
+        <TextView
+                android:id="@+id/value_altitude_maxvalue"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignBaseline="@id/value_altitude_maxlabel"
+                android:layout_alignBottom="@id/value_altitude_maxlabel"
+                android:layout_toRightOf="@id/value_altitude_maxlabel"
+                />
+        <TextView
+                android:id="@+id/value_altitude_ascendlabel"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/value_altitude_maxlabel"
+                android:textStyle="bold"
+                android:text="@string/altitudeAscend"/>
+        <TextView
+                android:id="@+id/value_altitude_ascendvalue"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignBaseline="@id/value_altitude_ascendlabel"
+                android:layout_alignBottom="@id/value_altitude_ascendlabel"
+                android:layout_toRightOf="@id/value_altitude_ascendlabel"
+                />
+        <TextView
+                android:id="@+id/value_altitude_descendlabel"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/value_altitude_ascendlabel"
+                android:textStyle="bold"
+                android:text="@string/altitudeDescend"/>
+        <TextView
+                android:id="@+id/value_altitude_descendvalue"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignBaseline="@id/value_altitude_descendlabel"
+                android:layout_alignBottom="@id/value_altitude_descendlabel"
+                android:layout_toRightOf="@id/value_altitude_descendlabel"
+                />
     </RelativeLayout>
-
-
 
 </LinearLayout>
