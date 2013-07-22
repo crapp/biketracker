@@ -33,11 +33,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.dropbox.sync.android.DbxAccountManager;
+//import com.dropbox.sync.android.DbxAccountManager;
 
 public class MainActivity extends Activity implements TrackDialogListener{
 
-    private DbxAccountManager dbxAccManager;
+    //private DbxAccountManager dbxAccManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +119,10 @@ public class MainActivity extends Activity implements TrackDialogListener{
 
     private void dropboxSync(boolean enable) {
         if (enable) {
-            if (this.dbxAccManager == null) {
-                //FIXME: How to handle the app key/secret in oss???
-                //FIXME: What for do we need dropbox support? Export tracks to dropbox? Syncing app db directly is highly discouraged!
-            }
+//            if (this.dbxAccManager == null) {
+//                //FIXME: How to handle the app key/secret in oss???
+//                //FIXME: What for do we need dropbox support? Export tracks to dropbox? Syncing app db directly is highly discouraged!
+//            }
         }
     }
 }

@@ -4,34 +4,29 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_margin="5dp">
+              android:padding="8dp">
     <TextView
             android:id="@+id/dialog_txtv_title"
             android:text="@string/altitude"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:textStyle="italic"
+            android:textStyle="bold"
             />
 
-    <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Hello world"/>
-    <!--
     <ImageView
             android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/horizontal_line"/>-->
+            android:layout_height="4dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/horizontal_line"/>
 
 
     <RelativeLayout
             android:id="@+id/value_altitude_rel"
             android:layout_width="match_parent"
             android:layout_height="100px"
-            android:layout_marginTop="10dp"
-            android:padding="5dp">
-        <!--android:background="@drawable/roundcorners_shadow_laylist"-->
+            android:layout_marginTop="12dp"
+            android:padding="5dp"
+            android:background="@drawable/roundcorners_shadow_laylist">
         <TextView
                 android:id="@+id/value_altitude_minlabel"
                 android:layout_width="wrap_content"
