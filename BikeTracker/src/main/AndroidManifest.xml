@@ -7,7 +7,7 @@
     <!-- Minimum Android 4.0 -->
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <!-- We need to access our current position. We do this only by using GPS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
