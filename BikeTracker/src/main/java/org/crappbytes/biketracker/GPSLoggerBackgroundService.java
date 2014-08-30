@@ -124,7 +124,7 @@ public class GPSLoggerBackgroundService extends Service {
 		@Override
 		public void onLocationChanged(Location location) {
 			if (location.getAccuracy() <= minAccuracy) {
-				//hoooray we can use this one
+				// hoooray we can use this one
 
 				double[] altiAscDesc = {location.getAltitude(), 0, 0};
 				double distance = 0;
