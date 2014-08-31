@@ -251,5 +251,4 @@ public class TracksContentProvider extends ContentProvider {
             Log.e("", ex.getStackTrace().toString());
         }
 	}
-
 }

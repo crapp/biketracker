@@ -1,6 +1,6 @@
 /*
  *  BikeTracker is an Android Application.
- *  Copyright (C) 2013  Christian Rapp
+ *  Copyright (C) 2013, 2014 Christian Rapp <0x2a@posteo.org>
  *  
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,9 +27,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 public class YesCancelDialogFragment extends DialogFragment {
-	
-	
-	
+
 	/* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
