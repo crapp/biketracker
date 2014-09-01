@@ -83,6 +83,8 @@ public class TracksContentProvider extends ContentProvider {
             Log.e("", ex.getStackTrace().toString());
             return returnUri;
         }
+
+        // activate foreign keys support for sqlite
 		foreignKeys(sqlDB);
 		long id = 0;
         switch (uriType) {
@@ -117,6 +119,8 @@ public class TracksContentProvider extends ContentProvider {
             Log.e("", ex.getStackTrace().toString());
             return 0;
         }
+
+        // activate foreign keys support for sqlite
         foreignKeys(sqlDB);
 		switch (sURIMatcher.match(uri)) {
 		case TRACK:
@@ -147,7 +151,8 @@ public class TracksContentProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		//TODO: In the tut, vogella checked whether all the requested columns really exist. Not needed?!!? I mean this is a non public provider
+		// TODO: In the tut, vogella checked whether all the requested columns really exist.
+		// Not needed?!!? I mean this is a non public provider
         SQLiteDatabase sqlDB = null;
         try {
             //we only need a readable database here
@@ -217,6 +222,7 @@ public class TracksContentProvider extends ContentProvider {
             Log.e("", ex.getStackTrace().toString());
             return affectedRows;
         }
+        // activate foreign keys support for sqlite
 		foreignKeys(sqlDB);
 		switch(sURIMatcher.match(uri)) {
 		case TRACK:
@@ -243,6 +249,10 @@ public class TracksContentProvider extends ContentProvider {
 	}
 	
 	private void foreignKeys(SQLiteDatabase sqlDB) {
+
+        // FIXME: Seems like we should use the DBHelper class to activate foreign key support.
+        // --> http://developer.android.com/reference/android/database/sqlite/SQLiteOpenHelper.html#onConfigure%28android.database.sqlite.SQLiteDatabase%29
+
         try {
 		    sqlDB.execSQL("PRAGMA foreign_keys = ON;");
         }
