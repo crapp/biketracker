@@ -20,7 +20,9 @@ package org.crappbytes.biketracker;
 
 import org.crappbytes.biketracker.TrackNameDialogFragment.TrackDialogListener;
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.ActionBar;
@@ -57,6 +59,9 @@ public class MainActivity extends Activity implements TrackDialogListener{
         butNewTrack.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
+                // Assume thisActivity is the current activity
+                int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.ACCESS_FINE_LOCATION);
 				DialogFragment trackDialog = new TrackNameDialogFragment();
 				trackDialog.show(getFragmentManager(), "trackdialog");
 			}
@@ -117,6 +122,7 @@ public class MainActivity extends Activity implements TrackDialogListener{
 		
 	}
 
+    // TODO: Think it would be better to sync tracks using gpsies and their REST API!
     private void dropboxSync(boolean enable) {
         if (enable) {
 //            if (this.dbxAccManager == null) {
