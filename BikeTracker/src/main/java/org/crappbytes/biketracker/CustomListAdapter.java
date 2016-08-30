@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.crappbytes.biketracker.database.TrackNodesTable;
 import org.crappbytes.biketracker.database.TrackTable;
@@ -54,11 +55,11 @@ public class CustomListAdapter extends CursorAdapter {
 			TextView dist = (TextView) view.findViewById(R.id.rowTrackDistance);
 			TextView altUp = (TextView) view.findViewById(R.id.rowTrackTotalHeight);
 			TextView date = (TextView) view.findViewById(R.id.rowTrackDate);
-            //TODO: I really don't need hungarian notation :(
 			String sName = cursor.getString(cursor.getColumnIndex(TrackTable.COLUMN_NAME));
             String sDist = "0";
             if (!cursor.isNull(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_DISTANCE))) {
-                double dDist = Utility.round(cursor.getDouble(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_DISTANCE)), 2);
+                double dDist = Utility.round(cursor.getDouble(cursor.getColumnIndex("sum_" +
+						TrackNodesTable.COLUMN_DISTANCE)), 2);
 			    sDist = String.valueOf(dDist);
             }
             String sAltUp = "0";
@@ -70,12 +71,12 @@ public class CustomListAdapter extends CursorAdapter {
 			
 			
 			name.setText(sName);
-			dist.setText(sDist);
-			altUp.setText(sAltUp);
+			dist.setText(sDist + " km");
+			altUp.setText(sAltUp + " m");
 			//get system date format
 			DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
 			//parse date string from db
-			SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 			Date d = null;
 			try {
 				d = dFormat.parse(sDate);

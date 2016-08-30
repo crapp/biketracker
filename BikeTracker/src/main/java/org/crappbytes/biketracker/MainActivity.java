@@ -51,7 +51,9 @@ public class MainActivity extends Activity implements TrackDialogListener{
             // For the main activity, make sure the app icon in the action bar
             // does not behave as a button
             ActionBar actionBar = getActionBar();
-            actionBar.setHomeButtonEnabled(false);
+            if (actionBar != null) {
+                actionBar.setHomeButtonEnabled(false);
+            }
         }
 
         //get our buttons and assign onClickListener to them

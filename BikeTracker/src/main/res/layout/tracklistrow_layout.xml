@@ -9,18 +9,20 @@
     
     <ImageView
         android:id="@+id/rowMapImage"
-        android:layout_alignParentLeft="true"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:contentDescription="Will show a map image"
+        android:contentDescription="@string/imgMapHint"
         />
 
     <TextView
         android:id="@+id/rowTrackName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/rowMapImage"
+        android:layout_toEndOf="@id/rowMapImage"
         android:text="TrackName"
+		android:textSize="18sp"
+		android:textStyle="bold"
+		android:textColor="@android:color/holo_blue_dark"
         android:textAlignment="center" />
     
     <LinearLayout 
@@ -35,27 +37,30 @@
         	android:layout_width="0dp"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
-        	android:text="Distance"
-        	android:textSize="11sp"
+        	android:text="Dist"
+        	android:textSize="18sp"
+			android:textColor="@android:color/holo_blue_dark"
             android:gravity="center_vertical"
             android:drawableLeft="@drawable/ic_biketracker_distance"
-            android:drawablePadding="2dp"/>
+            android:drawablePadding="3dp"/>
         <TextView 
         	android:id="@+id/rowTrackTotalHeight"
         	android:layout_width="0dp"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
-        	android:text="TotalHeight"
-        	android:textSize="11sp"
+        	android:text="TH"
+        	android:textSize="18sp"
+			android:textColor="@android:color/holo_blue_dark"
             android:gravity="center_vertical"
             android:drawableLeft="@drawable/ic_mountain"
-            android:drawablePadding="2dp"/>
+            android:drawablePadding="3dp"/>
         <TextView 
         	android:id="@+id/rowTrackDate"
         	android:layout_width="0dp"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:text="Date"
-        	android:textSize="11sp"  />
+        	android:textSize="18sp"
+			android:textColor="@android:color/holo_blue_dark" />
     </LinearLayout>
 </LinearLayout>

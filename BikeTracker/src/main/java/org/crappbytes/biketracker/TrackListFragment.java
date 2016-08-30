@@ -44,7 +44,7 @@ import android.widget.Toast;
 public class TrackListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
 	
 	public interface onTrackSelectedListener {
-		public void onTrackSelected(long id);
+		void onTrackSelected(long id);
 	}
 	
 	private onTrackSelectedListener activityCallback;

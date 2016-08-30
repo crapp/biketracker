@@ -37,7 +37,8 @@
     <string name="exportkml">Export KML</string>
     <string name="exportgpx">Export GPX</string>
     <string name="exportKMLTitle">Exporting Track as KML</string>
-    <string name="exportKMLMessage">Writing Track %1$s to sdcard \n Please wait...</string>
+    <string name="exportKMLMessage">Writing Track %1$s to sdcard \n Please wait…</string>
+    <string name="imgMapHint">Will show a map image"</string>
     <!--preferences-->
     <string name="prefGPS">GPS</string>
 
