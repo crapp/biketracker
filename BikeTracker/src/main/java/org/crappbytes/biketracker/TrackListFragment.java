@@ -25,6 +25,7 @@ import org.crappbytes.biketracker.database.TrackTable;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
@@ -123,16 +124,18 @@ public class TrackListFragment extends ListFragment implements LoaderCallbacks<C
 
 
     @Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onAttach(Context context) {
+		super.onAttach(context);
 		
 		// This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            this.activityCallback = (onTrackSelectedListener) activity;
+            Activity a = getActivity();
+            if (a != null) {
+                this.activityCallback = (onTrackSelectedListener) a;
+            }
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+            throw new ClassCastException("Activity must implement OnHeadlineSelectedListener " + e.getMessage());
         }
 	}
 	

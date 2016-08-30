@@ -23,7 +23,7 @@
     <RelativeLayout
             android:id="@+id/value_altitude_rel"
             android:layout_width="match_parent"
-            android:layout_height="100px"
+            android:layout_height="match_parent"
             android:layout_marginTop="12dp"
             android:padding="5dp"
             android:background="@drawable/roundcorners_shadow_laylist">

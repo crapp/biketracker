@@ -225,7 +225,9 @@ public class GPSLoggerBackgroundService extends Service {
         } catch (SecurityException ex) {
             //TODO: is it even possible we get here without the appropriate permissions? Don't think so...
         }
-        notiManager.cancel(0);
+        if (notiManager != null) {
+            notiManager.cancel(0);
+        }
     }
 
     @Override

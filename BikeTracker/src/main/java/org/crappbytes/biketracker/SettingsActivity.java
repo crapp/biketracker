@@ -36,7 +36,9 @@ public class SettingsActivity extends Activity {
 
         //get action bar and set ancestral navigation
         ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         //instantiate fragment
         SettingsFragment sFrag = new SettingsFragment();

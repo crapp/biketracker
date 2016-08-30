@@ -91,7 +91,7 @@ public class ExportTask extends AsyncTask<Long, Void, Boolean> {
                     n.setTimestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datestring));
                 }
                 catch (ParseException ex) {
-                    Log.e(ctxt.getPackageName(), ex.getStackTrace().toString());
+                    Log.e(ctxt.getPackageName(), ex.getMessage());
                 }
                 nodeList.add(n);
             }

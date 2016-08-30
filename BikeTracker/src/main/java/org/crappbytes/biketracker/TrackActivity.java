@@ -43,6 +43,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -97,9 +98,11 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		
 		//get action bar and set ancestral navigation
         ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-		
-		//Intent is a connection between Activities - naja
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        //Intent is a connection between Activities - naja
 		Intent intent = getIntent();
         // get the track name defined in the TrackNameDialogFragment
 		this.trackName = intent.getStringExtra("org.crappbytes.TrackName");
@@ -227,7 +230,7 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		if (stopService(new Intent(this, GPSLoggerBackgroundService.class))) {
 			Toast.makeText(getApplicationContext(), "Service stopped successfully",
                     Toast.LENGTH_SHORT).show();
-			Drawable icon= getBaseContext().getResources().getDrawable(R.drawable.ic_button_play);
+            Drawable icon = ContextCompat.getDrawable(this, R.drawable.ic_button_play);
 			((Button) v).setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 			((Button) v).setText(R.string.resume);
 			((Button) v).setOnClickListener(resumeRecListener);
@@ -245,7 +248,7 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		if (startService(serviceIntent) != null) {
 			Toast.makeText(getApplicationContext(), "Service started successfully",
                     Toast.LENGTH_SHORT).show();
-			Drawable icon= getBaseContext().getResources().getDrawable(R.drawable.ic_button_pause);
+            Drawable icon = ContextCompat.getDrawable(this, R.drawable.ic_button_play);
 			((Button) v).setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 			((Button) v).setText(R.string.pause);
 			((Button) v).setOnClickListener(pauseRecListener);
@@ -278,8 +281,10 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
         cv.put(TrackTable.COLLUMN_LPF, this.sharedPrefs.getString(SettingsFragment.PREF_LPF, "25"));
 		Uri url = getContentResolver().insert(TracksContentProvider.CONTENT_URI_TRACK, cv);
 		//the last element of the Uri returned by insert is the ID. Store it as we need to pass it to the background service
-		this.trackID = url.getLastPathSegment();
-	}
+        if (url != null) {
+            this.trackID = url.getLastPathSegment();
+        }
+    }
 	
 	private boolean gpsEnabled() {
 		 LocationManager locationManager =

@@ -178,7 +178,7 @@ public class MainActivity extends Activity implements TrackDialogListener{
 
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.READ_CONTACTS)) {
+                    permission)) {
                 // TODO: Either remove this code or activate it
 //                new AlertDialog.Builder(this)
 //                        .setTitle("Inform and request")
@@ -202,6 +202,15 @@ public class MainActivity extends Activity implements TrackDialogListener{
                 ActivityCompat.requestPermissions(MainActivity.this,
                         new String[]{permission}, whichPermission);
             }
+        } else {
+            if (whichPermission == MainActivity.PERMISSION_LOCATION) {
+                this.canTrack = true;
+                return;
+            }
+            if (whichPermission == MainActivity.PERMISSION_STORAGE) {
+                this.showTracks = true;
+            }
+
         }
     }
 }
