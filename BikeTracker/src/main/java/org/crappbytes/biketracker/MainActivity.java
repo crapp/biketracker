@@ -21,7 +21,10 @@ package org.crappbytes.biketracker;
 import org.crappbytes.biketracker.TrackNameDialogFragment.TrackDialogListener;
 
 import android.Manifest;
-import android.content.SharedPreferences;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,11 +38,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-//import com.dropbox.sync.android.DbxAccountManager;
-
 public class MainActivity extends Activity implements TrackDialogListener{
 
-    //private DbxAccountManager dbxAccManager;
+    // some constants for permissions we need
+    private static final int PERMISSION_LOCATION = 1;
+    private static final int PERMISSION_STORAGE = 2;
+//    private static final int PERMISSION_CAMERA = 3;
+//    private static final int PERMISSION_NETWORK = 4;
+    private boolean showTracks = false;
+    private boolean canTrack = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,33 +69,30 @@ public class MainActivity extends Activity implements TrackDialogListener{
         butNewTrack.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-                // Assume thisActivity is the current activity
-                int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION);
-				DialogFragment trackDialog = new TrackNameDialogFragment();
-				trackDialog.show(getFragmentManager(), "trackdialog");
+                if (canTrack) {
+                    DialogFragment trackDialog = new TrackNameDialogFragment();
+                    trackDialog.show(getFragmentManager(), "trackdialog");
+                }
 			}
 		});
         Button butTrackList = (Button) findViewById(R.id.butShowTracks);
         butTrackList.setOnClickListener(new View.OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				//Intent trackListIntent = new Intent(MainActivity.this, TrackListActivity.class);
-				Intent trackListIntent = new Intent(MainActivity.this, TrackContainerActivity.class);
-		        startActivity(trackListIntent);
+                if (showTracks) {
+                    //Intent trackListIntent = new Intent(MainActivity.this, TrackListActivity.class);
+                    Intent trackListIntent = new Intent(MainActivity.this, TrackContainerActivity.class);
+                    startActivity(trackListIntent);
+                }
 			}
 		});
+
+        requestPermission(MainActivity.PERMISSION_LOCATION);
+        requestPermission(MainActivity.PERMISSION_STORAGE);
 
         //set default values for our application
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        //read from preferences if we should activate dropbox sync
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean dropbox = sharedPrefs.getBoolean("pref_syncDropbox", false);
-        if (dropbox) {
-            //this.dropboxSync(dropbox);
-        }
     }
 
 
@@ -124,13 +129,79 @@ public class MainActivity extends Activity implements TrackDialogListener{
 		
 	}
 
-    // TODO: Think it would be better to sync tracks using gpsies and their REST API!
-    private void dropboxSync(boolean enable) {
-        if (enable) {
-//            if (this.dbxAccManager == null) {
-//                //FIXME: How to handle the app key/secret in oss???
-//                //FIXME: What for do we need dropbox support? Export tracks to dropbox? Syncing app db directly is highly discouraged!
-//            }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case MainActivity.PERMISSION_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.canTrack = true;
+                } else {
+                    this.canTrack = false;
+                }
+                break;
+            }
+            case MainActivity.PERMISSION_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.showTracks = true;
+                } else {
+                    this.showTracks = false;
+                }
+                break;
+            }
+        }
+    }
+
+    private void requestPermission(final int whichPermission) {
+
+        String permission = "";
+        String alertBoxTitle = "";
+        String alertBoxText = "";
+
+        switch (whichPermission) {
+            case MainActivity.PERMISSION_LOCATION:
+                permission = Manifest.permission.ACCESS_FINE_LOCATION;
+                break;
+            case MainActivity.PERMISSION_STORAGE:
+                permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+                break;
+            default:
+                break;
+        }
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.READ_CONTACTS)) {
+                // TODO: Either remove this code or activate it
+//                new AlertDialog.Builder(this)
+//                        .setTitle("Inform and request")
+//                        .setMessage("You need to enable permissions, bla bla bla")
+//                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                ActivityCompat.requestPermissions(
+//                                        MainActivity.this,
+//                                        new String[]{permission},
+//                                        whichPermission);
+//                            }
+//                        })
+//                        .show();
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{permission}, whichPermission);
+            }
         }
     }
 }

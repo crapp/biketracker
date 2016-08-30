@@ -6,7 +6,7 @@
     <string name="butStartTracking">Start Tracking</string>
     <string name="butShowTracks">Show Tracks</string>
     <string name="title_activity_track">Track Stats</string>
-    <string name="title_dialog">Choose Track Name</string>
+    <string name="title_dialog">Choose a track name</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="noGPS">GPS is not activated</string>

@@ -31,9 +31,5 @@
                 android:title="Folder to export Tracks"
                 android:inputType="text"
                 android:defaultValue="biketracker"/>
-        <CheckBoxPreference
-                android:key="pref_syncDropbox"
-                android:title="Sync database with dropbox"
-                android:defaultValue="false"/>
     </PreferenceCategory>
 </PreferenceScreen>
