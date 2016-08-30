@@ -1,0 +1,1 @@
+(A) 2016-08-30 Track list loading is way to slow. We are using an asynchrounous loader shouldn't this show tracks as soon as one is loaded? @tracks
