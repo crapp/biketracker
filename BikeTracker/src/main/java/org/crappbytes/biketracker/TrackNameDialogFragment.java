@@ -21,6 +21,7 @@ package org.crappbytes.biketracker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -64,8 +65,8 @@ public class TrackNameDialogFragment extends DialogFragment {
     	}
     }
     
-	@SuppressLint("SimpleDateFormat")
-	@Override
+	@SuppressLint("SetTextI18n")
+    @Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		
@@ -93,7 +94,7 @@ public class TrackNameDialogFragment extends DialogFragment {
 	    newTrackName = (EditText)builderView.findViewById(R.id.nameNewTrack);
 	    //Use a GregorianCalendar to get Date and Time
 	    Calendar cal = new GregorianCalendar();
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH:mm"); 
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH:mm", Locale.US);
 	    newTrackName.setText("biketrack_" + dateFormat.format(cal.getTime()));
 		return builder.create();
 	}
