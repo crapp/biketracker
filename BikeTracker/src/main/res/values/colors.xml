@@ -3,4 +3,6 @@
     <color name="general_blue_background">#007db6</color>
     <color name="accent_material_dark">#ffcf40</color>
     <color name="secondary_text_default_material_dark">#ffffff</color>
+    <color name="dark_blue_pressed">#023FA5</color>
+    <color name="track_selector_back">#800080</color>
 </resources>
