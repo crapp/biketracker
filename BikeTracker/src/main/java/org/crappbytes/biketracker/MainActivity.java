@@ -36,7 +36,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MainActivity extends Activity implements TrackDialogListener{
 
@@ -65,8 +65,8 @@ public class MainActivity extends Activity implements TrackDialogListener{
         }
 
         //get our buttons and assign onClickListener to them
-        Button butNewTrack = (Button) findViewById(R.id.butStartTracking);
-        butNewTrack.setOnClickListener(new View.OnClickListener() {			
+        ImageButton butNewTrack = (ImageButton) findViewById(R.id.butStartTracking);
+        butNewTrack.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
                 if (canTrack) {
@@ -75,7 +75,7 @@ public class MainActivity extends Activity implements TrackDialogListener{
                 }
 			}
 		});
-        Button butTrackList = (Button) findViewById(R.id.butShowTracks);
+        ImageButton butTrackList = (ImageButton) findViewById(R.id.butShowTracks);
         butTrackList.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

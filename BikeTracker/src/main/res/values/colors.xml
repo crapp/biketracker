@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="general_blue_background">#007db6</color>
+    <color name="accent_material_dark">#ffcf40</color>
+    <color name="secondary_text_default_material_dark">#ffffff</color>
+</resources>

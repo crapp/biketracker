@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:layout_margin="2dp"
     android:padding="15dp"
-    android:orientation="vertical"
-    android:background="@drawable/tracklist_selector" >
+    android:orientation="vertical" >
+    <!--android:background="@drawable/tracklist_selector" >-->
     
     <ImageView
         android:id="@+id/rowMapImage"
@@ -18,19 +18,15 @@
         android:id="@+id/rowTrackName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/rowMapImage"
         android:text="TrackName"
-		android:textSize="18sp"
-		android:textStyle="bold"
-		android:textColor="@android:color/holo_blue_dark"
+        android:textSize="17sp"
         android:textAlignment="center" />
     
     <LinearLayout 
-        android:layout_below="@id/rowTrackName"
-        android:layout_toRightOf="@id/rowMapImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp">
         
         <TextView 
         	android:id="@+id/rowTrackDistance"
@@ -38,29 +34,26 @@
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:text="Dist"
-        	android:textSize="18sp"
-			android:textColor="@android:color/holo_blue_dark"
+        	android:textSize="17sp"
             android:gravity="center_vertical"
-            android:drawableLeft="@drawable/ic_biketracker_distance"
-            android:drawablePadding="3dp"/>
+            android:drawableStart="@drawable/ic_directions_bike_white_24dp"
+            android:drawablePadding="6dp"/>
         <TextView 
         	android:id="@+id/rowTrackTotalHeight"
         	android:layout_width="0dp"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:text="TH"
-        	android:textSize="18sp"
-			android:textColor="@android:color/holo_blue_dark"
+        	android:textSize="17sp"
             android:gravity="center_vertical"
-            android:drawableLeft="@drawable/ic_mountain"
-            android:drawablePadding="3dp"/>
+            android:drawableStart="@drawable/ic_terrain_white_24dp"
+            android:drawablePadding="6dp"/>
         <TextView 
         	android:id="@+id/rowTrackDate"
         	android:layout_width="0dp"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:text="Date"
-        	android:textSize="18sp"
-			android:textColor="@android:color/holo_blue_dark" />
+        	android:textSize="17sp" />
     </LinearLayout>
 </LinearLayout>

@@ -50,6 +50,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,9 +62,8 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 	private TextView tvAltitude;
 	private TextView tvDistance;
 	private TextView tvTime;
-	private Button pauResButton;
-	
-	private String trackName;
+
+    private String trackName;
 	private String trackID;
 	private static final int LOADER_GENERAL = 1;
 	private static final int LOADER_FUNC = 2;
@@ -129,9 +129,9 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
                 vdf.show(getFragmentManager(), "altitudefragment");
 			}
 		});
-		
-		this.pauResButton = (Button) findViewById(R.id.butPauseTracking);
-		this.pauResButton.setOnClickListener(pauseRecListener);
+
+        ImageButton pauResButton = (ImageButton) findViewById(R.id.butPauseTracking);
+		pauResButton.setOnClickListener(pauseRecListener);
 
         //this.zeroSpeedTimer = new Timer();
 
@@ -230,10 +230,9 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		if (stopService(new Intent(this, GPSLoggerBackgroundService.class))) {
 			Toast.makeText(getApplicationContext(), "Service stopped successfully",
                     Toast.LENGTH_SHORT).show();
-            Drawable icon = ContextCompat.getDrawable(this, R.drawable.ic_button_play);
-			((Button) v).setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-			((Button) v).setText(R.string.resume);
-			((Button) v).setOnClickListener(resumeRecListener);
+            Drawable icon = ContextCompat.getDrawable(this, R.drawable.ic_play_arrow_white_24dp);
+			((ImageButton) v).setImageDrawable(icon);
+			v.setOnClickListener(resumeRecListener);
 		}
 	}
 	
@@ -248,10 +247,9 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		if (startService(serviceIntent) != null) {
 			Toast.makeText(getApplicationContext(), "Service started successfully",
                     Toast.LENGTH_SHORT).show();
-            Drawable icon = ContextCompat.getDrawable(this, R.drawable.ic_button_play);
-			((Button) v).setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-			((Button) v).setText(R.string.pause);
-			((Button) v).setOnClickListener(pauseRecListener);
+            Drawable icon = ContextCompat.getDrawable(this, R.drawable.ic_pause_white_24dp);
+			((ImageButton) v).setImageDrawable(icon);
+			v.setOnClickListener(pauseRecListener);
 		}
 	}
 	

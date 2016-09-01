@@ -99,17 +99,17 @@ public class GPSLoggerBackgroundService extends Service {
                 //TODO: is it even possible we get here without the appropriate permissions? Don't think so...
             }
 
-            //get notification manager
+            // get notification manager
             notiManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             // Prepare intent which is triggered if the
             // notification is selected
             Intent intent = new Intent(this, TrackActivity.class);
-            //set some flags to avoid starting a new instance of TrackActivity
+            // set some flags to avoid starting a new instance of TrackActivity
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("org.crappbytes.TrackName", trackName);
             intent.putExtra("org.crappbytes.TrackID", trackID);
             PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
-            //Compat because we said from Api Level 14 on
+            // Compat because we said from Api Level 14 on
             Notification no = new NotificationCompat.Builder(this)
                     .setContentTitle("BikeTracker tracking...")
                     .setContentText("BikeTracker is tracking your movement")
@@ -132,12 +132,12 @@ public class GPSLoggerBackgroundService extends Service {
                 double[] altiAscDesc = {location.getAltitude(), 0, 0};
                 double distance = 0;
                 if (lpf == null) {
-                    //get smoothing factor from preferences file
+                    // get smoothing factor from preferences file
                     String smoothingfactor = prefShared.getString(SettingsFragment.PREF_LPF, "25");
                     lpf = new LowPassFilter(location.getAltitude(), Double.parseDouble(smoothingfactor));
                 }
 
-                //calculate distance to previous node now and store in db
+                // calculate distance to previous node now and store in db
                 if (prevLoc != null) {
                     //compute distance to previous location
                     distance = Utility.haversineDistance(prevLoc.getLatitude(),
@@ -155,7 +155,7 @@ public class GPSLoggerBackgroundService extends Service {
 //                            Toast.LENGTH_SHORT).show();
                 }
 
-                //calculate race time now and store in db
+                // calculate race time now and store in db
                 if (unixTime != 0) {
                     //get seconds since epoche
                     long newUnixTime = System.currentTimeMillis() / 1000L;
@@ -169,7 +169,7 @@ public class GPSLoggerBackgroundService extends Service {
                     unixTime = System.currentTimeMillis() / 1000L;
                 }
 
-                //save location as previous location.
+                // save location as previous location.
                 prevLoc = location;
                 ContentValues cv = new ContentValues();
                 cv.put(TrackNodesTable.COLUMN_TRACKID, trackID);

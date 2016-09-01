@@ -2,6 +2,7 @@
 (B) 2016-08-30 Tracklist should show date and time @tracks
 (A) 2016-08-30 Main Activity large buttons are looking awful. The main Activity needs to get a restart @look&feel
 (C) 2016-08-30 Add online services for uploading tracks like gpsies and maybe others that provide an api @sync
-(B) 2016-08-30 Track detail view is missing most interactions. What about that photo image? Add functionality to draw a height profile. @tracks
+(B) 2016-08-30 Track detail view is missing most interactions. What about that photo image? Add functionality to draw a height / speed profile. @tracks @look&feel
 (C) 2016-08-30 Add more export formats like gpx @sync @export
+(B) 2016-08-31 Navigation from Track Detail back to tracklist is not working using the top nav button. You land at the Main Activity @appnavigation
 x 2016-08-30 2016-08-30 Fix permission request on Marshmallow @permission

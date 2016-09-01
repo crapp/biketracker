@@ -4,7 +4,7 @@
     <string name="app_name">Bike Tracker</string>
     <string name="settings">Settings</string>
     <string name="butStartTracking">Start Tracking</string>
-    <string name="butShowTracks">Show Tracks</string>
+    <string name="butShowTracks">Track History</string>
     <string name="title_activity_track">Track Stats</string>
     <string name="title_dialog">Choose a track name</string>
     <string name="ok">OK</string>

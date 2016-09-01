@@ -6,29 +6,44 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
-    
-    <LinearLayout 
-        android:layout_centerHorizontal="true"
+    tools:context=".MainActivity">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:orientation="vertical" >
-        
-        <Button 
-	    android:id="@+id/butStartTracking"
-	    android:layout_weight="1"
-	    android:layout_height="wrap_content"
-	    android:layout_width="match_parent"
-	    android:text="@string/butStartTracking"
-	    />
-        <Button 
-	    android:id="@+id/butShowTracks"	    
-	    android:layout_weight="1"
-	    android:layout_marginTop="10dp"
-	    android:layout_height="wrap_content"
-	    android:layout_width="match_parent"
-	    android:text="@string/butShowTracks"
-	    />
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/butStartTracking"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="70dp"
+            android:src="@drawable/ic_near_me_white_48dp"
+            android:scaleType="fitCenter"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/butStartTracking"
+            android:gravity="center"
+            android:textSize="22sp"/>
+        <ImageButton
+            android:id="@+id/butShowTracks"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="70dp"
+            android:src="@drawable/ic_storage_white_48dp"
+            android:scaleType="fitCenter"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/butShowTracks"
+            android:gravity="center"
+            android:textSize="22sp"/>
     </LinearLayout>
 
 </RelativeLayout>
