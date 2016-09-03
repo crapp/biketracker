@@ -41,6 +41,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.renderscript.Sampler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
@@ -49,8 +50,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -126,9 +127,32 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 				Toast.makeText(getApplicationContext(), toastMsg,
                         Toast.LENGTH_SHORT).show();
                 DialogFragment vdf = new ValueDialogFragment();
+//                vdf.setEnterTransition(new Slide(Gravity.RIGHT));
+//                vdf.setExitTransition(new Slide(Gravity.LEFT));
+//                getFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.content, f, getKey())
+//                        .commit();
+                Bundle args = new Bundle();
+                args.putInt(ValueDialogFragment.ARGS_VALUE_TYPE, ValueDialogFragment.ALTITUDE);
+				args.putLong(ValueDialogFragment.ARGS_TID, Long.parseLong(trackID));
+                vdf.setArguments(args);
                 vdf.show(getFragmentManager(), "altitudefragment");
 			}
 		});
+
+        RelativeLayout speedArea = (RelativeLayout) findViewById(R.id.relSpeed);
+        speedArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment vdf = new ValueDialogFragment();
+                Bundle args = new Bundle();
+                args.putInt(ValueDialogFragment.ARGS_VALUE_TYPE, ValueDialogFragment.SPEED);
+                args.putLong(ValueDialogFragment.ARGS_TID, Long.parseLong(trackID));
+                vdf.setArguments(args);
+                vdf.show(getFragmentManager(), "speedfragment");
+            }
+        });
 
         ImageButton pauResButton = (ImageButton) findViewById(R.id.butPauseTracking);
 		pauResButton.setOnClickListener(pauseRecListener);

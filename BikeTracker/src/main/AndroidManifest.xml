@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.crappbytes.biketracker"
     android:versionCode="1"
-    android:versionName="0.1" >
+    android:versionName="0.1">
 
     <!-- Minimum Android 5.0 -->
-    <!--<uses-sdk-->
-        <!--android:minSdkVersion="21"-->
-        <!--android:targetSdkVersion="23" />-->
+    <!-- <uses-sdk -->
+    <!-- android:minSdkVersion="21" -->
+    <!-- android:targetSdkVersion="23" /> -->
+
 
     <!-- We need to access our current position. We do this only by using GPS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -18,10 +19,10 @@
         android:allowBackup="true"
         android:icon="@drawable/launcher_biketracker"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Material.Biketracker.Blue" >
+        android:theme="@style/Theme.Material.Biketracker.Blue">
         <activity
-            android:name="org.crappbytes.biketracker.MainActivity"
-            android:label="@string/app_name" >
+            android:name=".MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,10 +31,10 @@
         </activity>
         <!-- Only portrait orientation for TrackActivity -->
         <activity
-            android:name="org.crappbytes.biketracker.TrackActivity"
+            android:name=".TrackActivity"
             android:label="@string/title_activity_track"
-            android:parentActivityName="org.crappbytes.biketracker.MainActivity"
-            android:screenOrientation="portrait" >
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
 
             <!-- Use meta-data for Android version older than 4.1 to get default navigation behavior -->
             <meta-data
@@ -41,27 +42,34 @@
                 android:value="org.crappbytes.biketracker.MainActivity" />
         </activity>
         <activity
-            android:name="org.crappbytes.biketracker.TrackContainerActivity"
+            android:name=".TrackContainerActivity"
             android:label="@string/title_activity_track_container"
-            android:parentActivityName="org.crappbytes.biketracker.MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.crappbytes.biketracker.MainActivity" />
         </activity>
-        <activity android:name="org.crappbytes.biketracker.SettingsActivity"
-                android:label="@string/settings"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings" />
 
         <service
-            android:name="org.crappbytes.biketracker.GPSLoggerBackgroundService"
-            android:label="GPSBackgroundService" >
-        </service>
+            android:name=".GPSLoggerBackgroundService"
+            android:label="GPSBackgroundService"></service>
 
         <provider
-            android:name="org.crappbytes.biketracker.contentprovider.TracksContentProvider"
+            android:name=".contentprovider.TracksContentProvider"
             android:authorities="org.crappbytes.biketracker.contentprovider"
-            android:exported="false" >
-        </provider>
-        
+            android:exported="false"></provider>
+
+        <activity
+            android:name=".StatsActivity"
+            android:label="@string/title_activity_stats"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.crappbytes.biketracker.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

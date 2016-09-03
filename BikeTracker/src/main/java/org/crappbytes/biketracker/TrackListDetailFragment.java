@@ -149,14 +149,24 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
                         TrackNodesTable.COLUMN_TIMESTAMP + " ASC");
                 break;
             case LOADER_NODESFUNC:
-                String projection[] = new String[] {"MAX(" + TrackNodesTable.COLUMN_ALTITUDELPF + ") AS max_" + TrackNodesTable.COLUMN_ALTITUDELPF,
-                        "MIN(" + TrackNodesTable.COLUMN_ALTITUDELPF + ") AS min_" + TrackNodesTable.COLUMN_ALTITUDELPF,
-                        "SUM(" + TrackNodesTable.COLUMN_ALTITUDEUP + ") AS sum_" + TrackNodesTable.COLUMN_ALTITUDEUP,
-                        "SUM(" + TrackNodesTable.COLUMN_ALTITUDEDOWN + ") AS sum_" + TrackNodesTable.COLUMN_ALTITUDEDOWN,
-                        "SUM(" + TrackNodesTable.COLUMN_DISTANCE + ") AS sum_" + TrackNodesTable.COLUMN_DISTANCE,
-                        "MIN(" + TrackNodesTable.COLUMN_SPEED + ") AS min_" + TrackNodesTable.COLUMN_SPEED,
-                        "MAX(" + TrackNodesTable.COLUMN_SPEED + ") AS max_" + TrackNodesTable.COLUMN_SPEED,
-                        "AVG(" + TrackNodesTable.COLUMN_SPEED + ") AS avg_" + TrackNodesTable.COLUMN_SPEED};
+                String projection[] = new String[] {
+                        "MAX(" + TrackNodesTable.COLUMN_ALTITUDELPF +
+                                ") AS max_" + TrackNodesTable.COLUMN_ALTITUDELPF,
+                        "MIN(" + TrackNodesTable.COLUMN_ALTITUDELPF +
+                                ") AS min_" + TrackNodesTable.COLUMN_ALTITUDELPF,
+                        "SUM(" + TrackNodesTable.COLUMN_ALTITUDEUP +
+                                ") AS sum_" + TrackNodesTable.COLUMN_ALTITUDEUP,
+                        "SUM(" + TrackNodesTable.COLUMN_ALTITUDEDOWN +
+                                ") AS sum_" + TrackNodesTable.COLUMN_ALTITUDEDOWN,
+                        "SUM(" + TrackNodesTable.COLUMN_DISTANCE +
+                                ") AS sum_" + TrackNodesTable.COLUMN_DISTANCE,
+                        "MIN(" + TrackNodesTable.COLUMN_SPEED +
+                                ") AS min_" + TrackNodesTable.COLUMN_SPEED,
+                        "MAX(" + TrackNodesTable.COLUMN_SPEED +
+                                ") AS max_" + TrackNodesTable.COLUMN_SPEED,
+                        "AVG(" + TrackNodesTable.COLUMN_SPEED +
+                                ") AS avg_" + TrackNodesTable.COLUMN_SPEED
+                };
                 cloader = new CursorLoader(getActivity(),
                         TracksContentProvider.CONTENT_URI_NODES,
                         projection,

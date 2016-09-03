@@ -18,6 +18,8 @@
     <string name="resume">Resume</string>
     <string name="speed">Speed</string>
     <string name="altitude">Altitude</string>
+    <string name="altitudeStatistics">Altitude statistics</string>
+    <string name="speedStatistics">Speed statistics</string>
     <string name="distance">Distance</string>
     <string name="traveltime">Travel time</string>
     <string name="title_activity_track_list">List of tracks</string>
@@ -27,10 +29,10 @@
     <string name="show">Show</string>
     <string name="trackDetailTimeBegin">Begin:</string>
     <string name="trackDetailTimeEnd">End:</string>
-    <string name="altitudeAscend">Ascend:</string>
-    <string name="altitudeDescend">Descend:</string>
-    <string name="altitudeMax">Max:</string>
-    <string name="altitudeMin">Min:</string>
+    <string name="altitudeAscend">Ascend</string>
+    <string name="altitudeDescend">Descend</string>
+    <string name="altitudeMax">Maximum</string>
+    <string name="altitudeMin">Minimum</string>
     <string name="speedAverage">Average:</string>
     <string name="edit">Edit</string>
     <string name="export">Export</string>
@@ -39,7 +41,11 @@
     <string name="exportKMLTitle">Exporting Track as KML</string>
     <string name="exportKMLMessage">Writing Track %1$s to sdcard \n Please wait…</string>
     <string name="imgMapHint">Will show a map image"</string>
+    <!--units-->
+    <string name="unit_meters" translatable="true">m</string>
+    <string name="unit_speed">km/h</string>
     <!--preferences-->
     <string name="prefGPS">GPS</string>
+    <string name="title_activity_stats">StatsActivity</string>
 
 </resources>

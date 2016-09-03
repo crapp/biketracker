@@ -9,13 +9,13 @@ buildscript {
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:support-v4:24.2.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
 }
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '24.0.1'
+    buildToolsVersion '24.0.2'
 
     defaultConfig {
         minSdkVersion 21
