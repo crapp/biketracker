@@ -155,8 +155,7 @@
             android:layout_weight="1"
             android:src="@drawable/ic_stop_white_24dp"
             android:scaleType="fitCenter"
-            style="?android:attr/borderlessButtonStyle"
-            android:onClick="stopRecording" />
+            style="?android:attr/borderlessButtonStyle" />
         <ImageButton
             android:id="@+id/butPauseTracking"
             android:layout_height="60dp"

@@ -88,6 +88,13 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 			resumeRecording(v);
 		}
 	};
+
+    private final OnClickListener stopListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onBackPressed();
+        }
+    };
 	
 	//Override methods
 	@Override
@@ -127,7 +134,7 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 				Toast.makeText(getApplicationContext(), toastMsg,
                         Toast.LENGTH_SHORT).show();
                 DialogFragment vdf = new ValueDialogFragment();
-//                vdf.setEnterTransition(new Slide(Gravity.RIGHT));
+
 //                vdf.setExitTransition(new Slide(Gravity.LEFT));
 //                getFragmentManager()
 //                        .beginTransaction()
@@ -156,6 +163,8 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 
         ImageButton pauResButton = (ImageButton) findViewById(R.id.butPauseTracking);
 		pauResButton.setOnClickListener(pauseRecListener);
+        ImageButton stopButton = (ImageButton) findViewById(R.id.butStopTracking);
+        stopButton.setOnClickListener(stopListener);
 
         //this.zeroSpeedTimer = new Timer();
 
@@ -242,9 +251,9 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
 		if (stopService(new Intent(this, GPSLoggerBackgroundService.class))) {
 			Toast.makeText(getApplicationContext(), "Service stopped successfully",
                     Toast.LENGTH_SHORT).show();
-			NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
 		}
-		//TODO: Open a Track Overview Activity. Reuse this activity for detail view in track list. Or use a fragment for this  
+        NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+		//TODO: Open a Track Overview Activity. Reuse this activity for detail view in track list. Or use a fragment for this
 	}
 	
 	/**
@@ -382,7 +391,7 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
                 //this.zeroSpeedTimer.cancel();
 				//the last element is important for us
 				cursor.moveToLast();
-				double height = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_ALTITUDE));
+				Double height = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_ALTITUDE));
 				double speed = cursor.getDouble(cursor.getColumnIndex(TrackNodesTable.COLUMN_SPEED));
 				
 				//Update race time
@@ -403,8 +412,8 @@ public class TrackActivity extends FragmentActivity implements YesCancelDialogLi
                 this.tvTime.setText(shours + ":" + sminutes + ":" + sseconds);
 
                 //update height
-				height = Utility.round(height, 1);
-				this.tvAltitude.setText(String.valueOf(height) + " m");
+				height = Utility.round(height, 0);
+				this.tvAltitude.setText(String.valueOf(height.intValue()) + " m");
 				
 				//update speed
 				speed = Utility.convertSpeed(speed);

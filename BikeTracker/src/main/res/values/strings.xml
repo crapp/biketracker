@@ -27,13 +27,13 @@
     <string name="title_activity_track_container">TrackContainerActivity</string>
     <string name="delete">Delete</string>
     <string name="show">Show</string>
-    <string name="trackDetailTimeBegin">Begin:</string>
-    <string name="trackDetailTimeEnd">End:</string>
+    <string name="trackDetailTimeBegin">Begin</string>
+    <string name="trackDetailTimeEnd">End</string>
     <string name="altitudeAscend">Ascend</string>
     <string name="altitudeDescend">Descend</string>
     <string name="altitudeMax">Maximum</string>
     <string name="altitudeMin">Minimum</string>
-    <string name="speedAverage">Average:</string>
+    <string name="speedAverage">Average</string>
     <string name="edit">Edit</string>
     <string name="export">Export</string>
     <string name="exportkml">Export KML</string>

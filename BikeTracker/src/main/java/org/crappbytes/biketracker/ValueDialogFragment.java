@@ -168,7 +168,12 @@ public class ValueDialogFragment extends DialogFragment implements LoaderManager
                                     "avg_" + TrackNodesTable.COLUMN_SPEED))), 1);
 
                     if (this.builderView != null) {
-
+                        ((TextView) this.builderView.findViewById(R.id.value_speed_minvalue)).setText(
+                                String.valueOf(speedMin));
+                        ((TextView) this.builderView.findViewById(R.id.value_speed_maxvalue)).setText(
+                                String.valueOf(speedMax));
+                        ((TextView) this.builderView.findViewById(R.id.value_speed_average)).setText(
+                                String.valueOf(speedAvg));
                     }
                     break;
             }
