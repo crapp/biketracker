@@ -20,6 +20,8 @@ package org.crappbytes.biketracker;
 
 import org.crappbytes.biketracker.TrackListFragment.onTrackSelectedListener;
 
+import android.app.ActionBar;
+import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +30,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
-public class TrackContainerActivity extends Activity implements onTrackSelectedListener {
+public class TrackContainerActivity extends Activity implements YesCancelDialogFragment.YesCancelDialogListener, onTrackSelectedListener {
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,4 +111,38 @@ public class TrackContainerActivity extends Activity implements onTrackSelectedL
 
         transaction.commit();
 	}
+
+	@Override
+	public void onBackPressed() {
+
+		int count = getFragmentManager().getBackStackEntryCount();
+
+		if (count == 0) {
+			super.onBackPressed();
+		} else {
+            ActionBar actionBar = getActionBar();
+            if (actionBar != null) {
+                actionBar.setHomeButtonEnabled(true); // disable the button
+                actionBar.setDisplayHomeAsUpEnabled(true); // remove the left caret
+            }
+			getFragmentManager().popBackStack();
+		}
+
+	}
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, int type) {
+        switch(type) {
+            case YesCancelDialogFragment.DIALOG_DELETE_TRACK:
+
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog, int type) {
+        switch(type) {
+            case YesCancelDialogFragment.DIALOG_DELETE_TRACK:
+                // do nothing
+        }
+    }
 }

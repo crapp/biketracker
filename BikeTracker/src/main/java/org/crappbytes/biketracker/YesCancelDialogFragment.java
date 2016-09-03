@@ -19,7 +19,6 @@
 
 package org.crappbytes.biketracker;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,16 +28,17 @@ import android.os.Bundle;
 
 public class YesCancelDialogFragment extends DialogFragment {
 
-	/* The activity that creates an instance of this dialog fragment must
+    /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
     public interface YesCancelDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog, int type);
-        public void onDialogNegativeClick(DialogFragment dialog, int type);
+        void onDialogPositiveClick(DialogFragment dialog, int type);
+        void onDialogNegativeClick(DialogFragment dialog, int type);
     }
 	
     public final static int DIALOG_GPS = 1;
     public final static int DIALOG_STOP_TRACKING = 2;
+	public final static int DIALOG_DELETE_TRACK = 3;
     
     // Instance of the interface to deliver action events
     private YesCancelDialogListener ycListener;
@@ -74,19 +74,26 @@ public class YesCancelDialogFragment extends DialogFragment {
 			//set Title and message
 			builder.setTitle(R.string.stopTracking);
 			builder.setMessage(R.string.stopTrackingMsg);
+			break;
+		case DIALOG_DELETE_TRACK:
+			builder.setTitle(R.string.deleteTrack);
+			builder.setMessage(R.string.deleteTrackMsg);
+
 		}
 		
 	    //Add action buttons, you don't need to specify them in the layout file.
 	    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 	    		   @Override
 	    		   public void onClick(DialogInterface dialog, int id) {
-	    			   ycListener.onDialogPositiveClick(YesCancelDialogFragment.this, getArguments().getInt("Type"));
+	    			   ycListener.onDialogPositiveClick(
+							   YesCancelDialogFragment.this, getArguments().getInt("Type"));
 	    		   }
 	    	   })
 	    	   .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the negative button event back to the host activity
-                	   ycListener.onDialogNegativeClick(YesCancelDialogFragment.this, getArguments().getInt("Type"));
+                	   ycListener.onDialogNegativeClick(
+							   YesCancelDialogFragment.this, getArguments().getInt("Type"));
                    }
                });
 		return builder.create();

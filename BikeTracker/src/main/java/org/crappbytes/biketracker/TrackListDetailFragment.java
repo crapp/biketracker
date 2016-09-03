@@ -18,9 +18,12 @@
 
 package org.crappbytes.biketracker;
 
+import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -31,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.crappbytes.biketracker.contentprovider.TracksContentProvider;
 import org.crappbytes.biketracker.database.TrackNodesTable;
@@ -103,18 +107,38 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //super.onCreateOptionsMenu(menu, inflater);
+        ActionBar actionBar = this.getActivity().getActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(false); // disable the button
+            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+        }
         inflater.inflate(R.menu.tracklist_detail_fragment, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        long id = getArguments().getLong(TrackListDetailFragment.ARG_POSITION);
+        final long id = getArguments().getLong(TrackListDetailFragment.ARG_POSITION);
         switch (item.getItemId()) {
             case R.id.menutrackdelete:
-                //TODO: Ask if sure to delete!
-                int delete = getActivity().getContentResolver().delete(TracksContentProvider.CONTENT_URI_TRACK,
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                alertBuilder.setTitle(R.string.deleteTrack);
+                alertBuilder.setMessage(R.string.deleteTrackMsg);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int delete = getActivity().getContentResolver().delete(
+                                TracksContentProvider.CONTENT_URI_TRACK,
                                 TrackTable.COLUMN_ID + "=?",
                                 new String[]{String.valueOf(id)});
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "Deleted " + delete + " Track(s)",
+                                Toast.LENGTH_LONG).show();
+                        getActivity().onBackPressed();
+                    }
+                });
+                alertBuilder.setNegativeButton(R.string.cancel, null);
+                alertBuilder.show();
                 return true;
             case R.id.menuexportkml:
                 ExportTask expTask = new ExportTask(getActivity(), this.trackName.getText().toString());

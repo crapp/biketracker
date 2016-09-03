@@ -26,6 +26,8 @@
     <string name="noTracksInDB">No Tracks so far, go back and record one :)</string>
     <string name="title_activity_track_container">TrackContainerActivity</string>
     <string name="delete">Delete</string>
+    <string name="deleteTrack">Delete Track</string>
+    <string name="deleteTrackMsg">Do you really want to delete this track?</string>
     <string name="show">Show</string>
     <string name="trackDetailTimeBegin">Begin</string>
     <string name="trackDetailTimeEnd">End</string>
