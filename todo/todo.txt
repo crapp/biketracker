@@ -4,9 +4,9 @@ x 2016-09-03 2016-08-30 Main Activity large buttons are looking awful. The main 
 (C) 2016-08-30 Add online services for uploading tracks like gpsies and maybe others that provide an api @sync
 (B) 2016-08-30 Track detail view is missing most interactions. What about that photo image? Add functionality to draw a height / speed profile. @tracks @look&feel
 (C) 2016-08-30 Add more export formats like gpx @sync @export
-(B) 2016-08-31 Navigation from Track Detail back to tracklist is not working using the top nav button. You land at the Main Activity @appnavigation
-(B) 2016-09-03 Use merge/include for layouts to reduce layout code
-(A) 2016-09-03 Delete button in track detail view, deletes the track but the detail fragment is not closed @tracks
+x 2016-09-03 2016-08-31 Navigation from Track Detail back to tracklist is not working using the top nav button. You land at the Main Activity @appnavigation
+(C) 2016-09-03 Use merge/include for layouts to reduce layout code
+x 2016-09-03 2016-09-03 Delete button in track detail view, deletes the track but the detail fragment is not closed @tracks
 (C) 2016-09-03 In track activity add small icons to speed and altitude areas to indicate speed is slower/faster than average or device is descending or ascending @tracks
 (B) 2016-09-03 Add slope information. We would need to calculate this in the GPS background service
 x 2016-08-30 2016-08-30 Fix permission request on Marshmallow @permission
