@@ -5,15 +5,17 @@
     <!-- shadow -->
     <item>
         <shape>
-            <corners android:radius="8dp"/>
-            <solid android:color="#20000000"/>
+            <corners android:radius="8dp" />
+            <solid android:color="#20000000" />
         </shape>
     </item>
 
     <item android:bottom="3px">
         <shape android:shape="rectangle">
             <corners android:radius="8dp" />
-            <stroke android:width="2px" android:color="#20000000" />
+            <stroke
+                android:width="2px"
+                android:color="#20000000" />
         </shape>
     </item>
 </layer-list>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/tracklst_context_del"
-          android:title="@string/delete"
-            />
-    <item android:id="@+id/tracklst_context_show"
-          android:title="@string/show"
-            />
+    <item
+        android:id="@+id/tracklst_context_del"
+        android:title="@string/delete" />
+    <item
+        android:id="@+id/tracklst_context_show"
+        android:title="@string/show" />
 
 
 </menu>

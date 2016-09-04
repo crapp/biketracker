@@ -40,58 +40,53 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TrackListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
-	
-	public interface onTrackSelectedListener {
-		void onTrackSelected(long id);
-	}
-	
-	private onTrackSelectedListener activityCallback;
-	private CustomListAdapter adapter;
-	private ProgressBar pBar;
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		// Create a progress bar to display while the list loads
-        pBar = new ProgressBar(getActivity());
-        pBar.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT));
-        pBar.setIndeterminate(true);
-        
-		
-		adapter = new CustomListAdapter(getActivity().getApplicationContext(), null, 0);
-		setListAdapter(adapter);
+    public interface onTrackSelectedListener {
+        void onTrackSelected(long id);
+    }
 
-		// Prepare the loader.  Either re-connect with an existing one,
+    private onTrackSelectedListener activityCallback;
+    private CustomListAdapter adapter;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        adapter = new CustomListAdapter(getActivity().getApplicationContext(), null, 0);
+        setListAdapter(adapter);
+
+        // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
-		getLoaderManager().initLoader(0, null, this);
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		getListView().setEmptyView(pBar);
+        getLoaderManager().initLoader(0, null, this);
+    }
 
-        //we registering our listview for longpress context menu
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // set a string that should be displayed if there are no tracks in the db
+        setEmptyText(getResources().getString(R.string.noTracksInDB));
+
+        setListShown(false);
+
+        // we registering our listview for longpress context menu
         registerForContextMenu(getListView());
-	}
+    }
 
-	@Override
-	public void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-	}
+    @Override
+    public void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -124,10 +119,10 @@ public class TrackListFragment extends ListFragment implements LoaderCallbacks<C
 
 
     @Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		
-		// This makes sure that the container activity has implemented
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
             Activity a = getActivity();
@@ -137,50 +132,51 @@ public class TrackListFragment extends ListFragment implements LoaderCallbacks<C
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement OnHeadlineSelectedListener " + e.getMessage());
         }
-	}
-	
-	/**
-	 * Called when an item in the list is clicked
-	 */
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
+    }
 
-		// Notify the container activity of selected item
+    /**
+     * Called when an item in the list is clicked
+     */
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        // Notify the container activity of selected item
         this.activityCallback.onTrackSelected(id);
-	}
+    }
 
-	@Override
-	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		CursorLoader cloader = null;
-		String[] projection = new String[]{TrackTable.TABLE_NAME + "." + TrackTable.COLUMN_ID,
-				TrackTable.COLUMN_NAME,
-				"SUM(" + TrackNodesTable.COLUMN_DISTANCE + ") AS sum_" + TrackNodesTable.COLUMN_DISTANCE,
-				"SUM(" + TrackNodesTable.COLUMN_ALTITUDEUP + ") AS sum_" + TrackNodesTable.COLUMN_ALTITUDEUP,
-				TrackTable.TABLE_NAME + "." + TrackTable.COLUMN_TIMESTAMP};
-		cloader = new CursorLoader(getActivity(),
-				TracksContentProvider.CONTENT_URI_TRACKNODES,
-				projection,
-				null,
-				null,
-				TrackTable.TABLE_NAME + "." + TrackTable.COLUMN_TIMESTAMP + " ASC");
-		return cloader;
-	}
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader cloader = null;
+        String[] projection = new String[]{TrackTable.TABLE_NAME + "." + TrackTable.COLUMN_ID,
+                TrackTable.COLUMN_NAME,
+                "SUM(" + TrackNodesTable.COLUMN_DISTANCE + ") AS sum_" + TrackNodesTable.COLUMN_DISTANCE,
+                "SUM(" + TrackNodesTable.COLUMN_ALTITUDEUP + ") AS sum_" + TrackNodesTable.COLUMN_ALTITUDEUP,
+                TrackTable.TABLE_NAME + "." + TrackTable.COLUMN_TIMESTAMP};
+        cloader = new CursorLoader(getActivity(),
+                TracksContentProvider.CONTENT_URI_TRACKNODES,
+                projection,
+                null,
+                null,
+                TrackTable.TABLE_NAME + "." + TrackTable.COLUMN_TIMESTAMP + " ASC");
+        return cloader;
+    }
 
-	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		if (cursor != null && cursor.getCount() > 0) {
-			// Swap the new cursor in.  (The framework will take care of closing the
-	        // old cursor once we return.)
-			this.adapter.swapCursor(cursor);
-		}
-	}
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor != null && cursor.getCount() > 0) {
+            // Swap the new cursor in.  (The framework will take care of closing the
+            // old cursor once we return.)
+            this.adapter.swapCursor(cursor);
+        }
+        setListShown(true);
+    }
 
-	@Override
-	public void onLoaderReset(Loader<Cursor> arg0) {
-		// This is called when the last Cursor provided to onLoadFinished()
+    @Override
+    public void onLoaderReset(Loader<Cursor> arg0) {
+        // This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
         this.adapter.swapCursor(null);
-	}
+    }
 }

@@ -37,64 +37,64 @@ import android.widget.TextView;
 
 public class CustomListAdapter extends CursorAdapter {
 
-	private Context ctxt; //application context
-	private Cursor cursor;
-	private int passedFlags;
-	
-	public CustomListAdapter(Context context, Cursor c, int flags) {
-		super(context, c, flags);
-		this.ctxt = context;
-		this.cursor = c;
-		this.passedFlags = flags;
-	}
+    private Context ctxt; //application context
+    private Cursor cursor;
+    private int passedFlags;
 
-	@Override
-	public void bindView(View view, Context context, Cursor cursor) {
-		if (cursor != null && cursor.getCount() > 0) {
-			TextView name = (TextView) view.findViewById(R.id.rowTrackName);
-			TextView dist = (TextView) view.findViewById(R.id.rowTrackDistance);
-			TextView altUp = (TextView) view.findViewById(R.id.rowTrackTotalHeight);
-			TextView date = (TextView) view.findViewById(R.id.rowTrackDate);
-			String sName = cursor.getString(cursor.getColumnIndex(TrackTable.COLUMN_NAME));
+    public CustomListAdapter(Context context, Cursor c, int flags) {
+        super(context, c, flags);
+        this.ctxt = context;
+        this.cursor = c;
+        this.passedFlags = flags;
+    }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        if (cursor != null && cursor.getCount() > 0) {
+            TextView name = (TextView) view.findViewById(R.id.rowTrackName);
+            TextView dist = (TextView) view.findViewById(R.id.rowTrackDistance);
+            TextView altUp = (TextView) view.findViewById(R.id.rowTrackTotalHeight);
+            TextView date = (TextView) view.findViewById(R.id.rowTrackDate);
+            String sName = cursor.getString(cursor.getColumnIndex(TrackTable.COLUMN_NAME));
             String sDist = "0";
             if (!cursor.isNull(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_DISTANCE))) {
                 double dDist = Utility.round(cursor.getDouble(cursor.getColumnIndex("sum_" +
-						TrackNodesTable.COLUMN_DISTANCE)), 2);
-			    sDist = String.valueOf(dDist);
+                        TrackNodesTable.COLUMN_DISTANCE)), 2);
+                sDist = String.valueOf(dDist);
             }
             String sAltUp = "0";
             if (!cursor.isNull(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_ALTITUDEUP))) {
                 int iAltUp = cursor.getInt(cursor.getColumnIndex("sum_" + TrackNodesTable.COLUMN_ALTITUDEUP));
-			    sAltUp = String.valueOf(iAltUp);
+                sAltUp = String.valueOf(iAltUp);
             }
-			String sDate = cursor.getString(cursor.getColumnIndex(TrackTable.COLUMN_TIMESTAMP));
-			
-			
-			name.setText(sName);
-			dist.setText(sDist + " km");
-			altUp.setText(sAltUp + " m");
-			//get system date format
-			DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
-			//parse date string from db
-			SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-			Date d = null;
-			try {
-				d = dFormat.parse(sDate);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			date.setText(dateFormat.format(d));
-			
-			
-		}
-	}
+            String sDate = cursor.getString(cursor.getColumnIndex(TrackTable.COLUMN_TIMESTAMP));
 
-	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		//this is the layout of the columns
-		View view = LayoutInflater.from(context).inflate(R.layout.tracklistrow_layout, parent, false);
-		return view;
-	}
+
+            name.setText(sName);
+            dist.setText(sDist + " km");
+            altUp.setText(sAltUp + " m");
+            //get system date format
+            DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
+            //parse date string from db
+            SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            Date d = null;
+            try {
+                d = dFormat.parse(sDate);
+            } catch (ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            date.setText(dateFormat.format(d));
+
+
+        }
+    }
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        //this is the layout of the columns
+        View view = LayoutInflater.from(context).inflate(R.layout.tracklistrow_layout, parent, false);
+        return view;
+    }
 
 }

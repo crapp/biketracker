@@ -35,67 +35,67 @@ import android.view.View;
 import android.widget.EditText;
 
 public class TrackNameDialogFragment extends DialogFragment {
-	
-	/* The activity that creates an instance of this dialog fragment must
+
+    /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
     public interface TrackDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog, String trackname);
         public void onDialogNegativeClick(DialogFragment dialog);
     }
-	
+
     // Instance of the interface to deliver action events
     private TrackDialogListener tdListener;
-    
+
     private EditText newTrackName;
-    
+
     //We override the onAttach Method where we instantiate the DialogListener
     @Override
     public void onAttach(Activity activity) {
-    	super.onAttach(activity);
-    	
-    	try {
-    		// Instantiate the TrackDialogListener that we use to notify the calling Activity
-    		this.tdListener = (TrackDialogListener) activity;
-    	}
-    	catch(ClassCastException e) {
-    		// The activity does not implement the interface
-    		throw new ClassCastException(activity.toString() + 
-    				 " must implement TrackDialogListener");
-    	}
-    }
-    
-	@SuppressLint("SetTextI18n")
-    @Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		
-		// Get the layout inflater
-	    LayoutInflater inflater = getActivity().getLayoutInflater();
+        super.onAttach(activity);
 
-	    // Inflate and set the layout for the dialog
-	    // Pass null as the parent view because its going in the dialog layout
-	    View builderView = inflater.inflate(R.layout.dialog_trackname, null);
-	    builder.setView(builderView);
-	    
-	    //Add action buttons, you don't need to specify them in the layout file.
-	    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-	    		   @Override
-	    		   public void onClick(DialogInterface dialog, int id) {
-	    			   tdListener.onDialogPositiveClick(TrackNameDialogFragment.this, newTrackName.getText().toString());
-	    		   }
-	    	   })
-	    	   .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        try {
+            // Instantiate the TrackDialogListener that we use to notify the calling Activity
+            this.tdListener = (TrackDialogListener) activity;
+        }
+        catch(ClassCastException e) {
+            // The activity does not implement the interface
+            throw new ClassCastException(activity.toString() +
+                     " must implement TrackDialogListener");
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // Get the layout inflater
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        View builderView = inflater.inflate(R.layout.dialog_trackname, null);
+        builder.setView(builderView);
+
+        //Add action buttons, you don't need to specify them in the layout file.
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int id) {
+                       tdListener.onDialogPositiveClick(TrackNameDialogFragment.this, newTrackName.getText().toString());
+                   }
+               })
+               .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the negative button event back to the host activity
-                	   tdListener.onDialogNegativeClick(TrackNameDialogFragment.this);
+                       tdListener.onDialogNegativeClick(TrackNameDialogFragment.this);
                    }
                });
-	    newTrackName = (EditText)builderView.findViewById(R.id.nameNewTrack);
-	    //Use a GregorianCalendar to get Date and Time
-	    Calendar cal = new GregorianCalendar();
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH:mm", Locale.US);
-	    newTrackName.setText("biketrack_" + dateFormat.format(cal.getTime()));
-		return builder.create();
-	}
+        newTrackName = (EditText)builderView.findViewById(R.id.nameNewTrack);
+        //Use a GregorianCalendar to get Date and Time
+        Calendar cal = new GregorianCalendar();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH:mm", Locale.US);
+        newTrackName.setText("biketrack_" + dateFormat.format(cal.getTime()));
+        return builder.create();
+    }
 }

@@ -1,159 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <ScrollView android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <RelativeLayout android:id="@+id/detail_scrollContainer"
-            android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/detail_scrollContainer"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp">
-            <RelativeLayout android:id="@+id/detail_top"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                <TextView android:id="@+id/detailTrackName"
-                          android:layout_height="wrap_content"
-                          android:layout_width="match_parent"
-                          android:textSize="18sp"
-                          android:textStyle="bold"
-                          android:text="Trackname"/>
-                <ImageView android:id="@+id/detailTrackImage"
-                           android:layout_width="160dp"
-                           android:layout_height="160dp"
-                           android:src="@drawable/ic_noimage"
-                           android:layout_marginTop="15dp"
-                           android:layout_below="@id/detailTrackName"
-                           android:layout_alignParentRight="true"/>
-                <TextView android:id="@+id/detailTrackStart"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="15dp"
-                          android:textSize="16sp"
-                          android:text="@string/trackDetailTimeBegin"
-                          android:layout_below="@id/detailTrackName"/>
-                <TextView android:id="@+id/detailTrackEnd"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textSize="16sp"
-                          android:text="@string/trackDetailTimeEnd"
-                          android:layout_below="@+id/detailTrackStart"
-                          android:layout_alignParentLeft="true"/>
-                <TextView android:id="@+id/detailTrackDist"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textSize="16sp"
-                          android:text="@string/distance"
-                          android:layout_below="@id/detailTrackEnd"
-                          android:layout_alignParentLeft="true"/>
+
+            <RelativeLayout
+                android:id="@+id/detail_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/detailTrackName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Trackname"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/detailTrackImage"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/detailTrackName"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/ic_noimage" />
+
+                <TextView
+                    android:id="@+id/detailTrackStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detailTrackName"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/trackDetailTimeBegin"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/detailTrackEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/detailTrackStart"
+                    android:text="@string/trackDetailTimeEnd"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/detailTrackDist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/detailTrackEnd"
+                    android:text="@string/distance"
+                    android:textSize="16sp" />
             </RelativeLayout>
-            <RelativeLayout android:id="@+id/detail_height"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:layout_below="@id/detail_top"
-                            android:layout_marginTop="10dp">
-                <TextView android:id="@+id/detail_heightCaption"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textSize="18sp"
-                          android:textStyle="bold"
-                          android:text="@string/altitude"/>
-                <LinearLayout android:id="@+id/detail_hightLayoutAscDesc"
-                              android:layout_height="wrap_content"
-                              android:layout_width="match_parent"
-                              android:layout_below="@id/detail_heightCaption"
-                              android:layout_marginTop="10dp"
-                              android:layout_marginLeft="10dp"
-                              android:layout_marginRight="10dp"
-                              android:orientation="horizontal">
-                    <TextView android:id="@+id/detail_heightUp"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:textSize="16sp"
-                              android:text="@string/altitudeAscend"
-                              />
-                    <TextView android:id="@+id/detail_heightDown"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:textSize="16sp"
-                              android:text="@string/altitudeDescend"
-                            />
+
+            <RelativeLayout
+                android:id="@+id/detail_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_top"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/detail_heightCaption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/altitude"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/detail_hightLayoutAscDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_heightCaption"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/detail_heightUp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/altitudeAscend"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/detail_heightDown"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/altitudeDescend"
+                        android:textSize="16sp" />
                 </LinearLayout>
-                <LinearLayout android:layout_height="wrap_content"
-                              android:layout_width="match_parent"
-                              android:layout_below="@id/detail_hightLayoutAscDesc"
-                              android:layout_marginTop="10dp"
-                              android:layout_marginLeft="10dp"
-                              android:layout_marginRight="10dp"
-                              android:orientation="horizontal">
-                    <TextView android:id="@+id/detail_heightMax"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:textSize="16sp"
-                              android:text="@string/altitudeMax"
-                            />
-                    <TextView android:id="@+id/detail_heightMin"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:textSize="16sp"
-                              android:text="@string/altitudeMin"
-                            />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_hightLayoutAscDesc"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/detail_heightMax"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/altitudeMax"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/detail_heightMin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/altitudeMin"
+                        android:textSize="16sp" />
                 </LinearLayout>
             </RelativeLayout>
-            <RelativeLayout android:id="@+id/detail_speed"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:layout_below="@id/detail_height"
-                            android:layout_marginTop="20dp">
-                <TextView android:id="@+id/detail_speedCaption"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textSize="18sp"
-                          android:textStyle="bold"
-                          android:text="@string/speed"/>
-                <LinearLayout android:id="@+id/detail_speedLayoutMinMax"
-                              android:layout_height="wrap_content"
-                              android:layout_width="match_parent"
-                              android:layout_below="@id/detail_speedCaption"
-                              android:layout_marginTop="10dp"
-                              android:layout_marginLeft="10dp"
-                              android:layout_marginRight="10dp"
-                              android:orientation="horizontal">
-                    <TextView android:id="@+id/detail_speedMax"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:textSize="16sp"
-                              android:text="@string/altitudeMax"
-                            />
-                    <TextView android:id="@+id/detail_speedMin"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:textSize="16sp"
-                              android:text="@string/altitudeMin"
-                            />
+
+            <RelativeLayout
+                android:id="@+id/detail_speed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_height"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/detail_speedCaption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/speed"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/detail_speedLayoutMinMax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_speedCaption"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/detail_speedMax"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/altitudeMax"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/detail_speedMin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/altitudeMin"
+                        android:textSize="16sp" />
                 </LinearLayout>
-                <LinearLayout android:layout_height="wrap_content"
-                              android:layout_width="match_parent"
-                              android:layout_below="@id/detail_speedLayoutMinMax"
-                              android:layout_marginTop="10dp"
-                              android:layout_marginLeft="10dp"
-                              android:layout_marginRight="10dp"
-                              android:orientation="horizontal">
-                    <TextView android:id="@+id/detail_speedAvg"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:textSize="16sp"
-                              android:text="@string/speedAverage"
-                            />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_speedLayoutMinMax"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/detail_speedAvg"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/speedAverage"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
             </RelativeLayout>

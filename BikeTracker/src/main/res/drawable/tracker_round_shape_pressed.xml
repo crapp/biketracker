@@ -4,13 +4,15 @@
 
     <padding
         android:bottom="7dp"
-        android:top="7dp"
         android:left="7dp"
-        android:right="7dp" />
+        android:right="7dp"
+        android:top="7dp" />
 
     <corners android:radius="8dp" />
 
-    <stroke android:color="@android:color/white" android:width="2dp"/>
+    <stroke
+        android:width="2dp"
+        android:color="@android:color/white" />
 
     <solid android:color="@color/dark_blue_pressed" />
 

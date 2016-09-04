@@ -19,20 +19,20 @@
 package org.crappbytes.biketracker;
 
 public class LowPassFilter {
-	private double smoothedAltitude;
-	private double previousAltitude;
+    private double smoothedAltitude;
+    private double previousAltitude;
     private double smoothingFactor;
-	
-	public LowPassFilter(double altitude, double smoothingFactor) {
-		this.smoothedAltitude = altitude;
-		this.previousAltitude = altitude;
+
+    public LowPassFilter(double altitude, double smoothingFactor) {
+        this.smoothedAltitude = altitude;
+        this.previousAltitude = altitude;
         this.smoothingFactor = smoothingFactor;
-	}
-	
-	double[] applyFilter(double currentAltitude)
-	{
-		// return array for ascend and descend
-		double[] ascDesc = {currentAltitude, 0, 0};
+    }
+
+    double[] applyFilter(double currentAltitude)
+    {
+        // return array for ascend and descend
+        double[] ascDesc = {currentAltitude, 0, 0};
         //handle great differences
         //TODO: Watch this closely!!
 //        if (currentAltitude - this.previousAltitude > 10 || this.previousAltitude - currentAltitude > 10) {
@@ -40,17 +40,17 @@ public class LowPassFilter {
 //            this.previousAltitude = this.smoothedAltitude;
 //            return ascDesc;
 //        }
-		this.smoothedAltitude += (currentAltitude - this.smoothedAltitude) / this.smoothingFactor;
-		if (this.previousAltitude > this.smoothedAltitude)
-		{
-			ascDesc[2] = this.previousAltitude - this.smoothedAltitude; 
-		}
-		if (this.smoothedAltitude > this.previousAltitude)
-		{
-			ascDesc[1] = this.smoothedAltitude - this.previousAltitude;
-		}
-		ascDesc[0] = this.smoothedAltitude;
-		this.previousAltitude = this.smoothedAltitude;
-		return ascDesc;
-	}
+        this.smoothedAltitude += (currentAltitude - this.smoothedAltitude) / this.smoothingFactor;
+        if (this.previousAltitude > this.smoothedAltitude)
+        {
+            ascDesc[2] = this.previousAltitude - this.smoothedAltitude;
+        }
+        if (this.smoothedAltitude > this.previousAltitude)
+        {
+            ascDesc[1] = this.smoothedAltitude - this.previousAltitude;
+        }
+        ascDesc[0] = this.smoothedAltitude;
+        this.previousAltitude = this.smoothedAltitude;
+        return ascDesc;
+    }
 }

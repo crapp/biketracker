@@ -35,10 +35,10 @@ public class YesCancelDialogFragment extends DialogFragment {
         void onDialogPositiveClick(DialogFragment dialog, int type);
         void onDialogNegativeClick(DialogFragment dialog, int type);
     }
-	
+
     public final static int DIALOG_GPS = 1;
     public final static int DIALOG_STOP_TRACKING = 2;
-	public final static int DIALOG_DELETE_TRACK = 3;
+    public final static int DIALOG_DELETE_TRACK = 3;
     
     // Instance of the interface to deliver action events
     private YesCancelDialogListener ycListener;
@@ -46,57 +46,57 @@ public class YesCancelDialogFragment extends DialogFragment {
     //We override the onAttach Method where we instantiate the DialogListener
     @Override
     public void onAttach(Activity activity) {
-    	super.onAttach(activity);
-    	
-    	try {
-    		// Instantiate the TrackDialogListener that we use to notify the calling Activity
-    		this.ycListener = (YesCancelDialogListener) activity;
-    	}
-    	catch(ClassCastException e) {
-    		// The activity does not implement the interface
-    		throw new ClassCastException(activity.toString() + 
-    				 " must implement YesCancelDialogListener");
-    	}
+        super.onAttach(activity);
+
+        try {
+            // Instantiate the TrackDialogListener that we use to notify the calling Activity
+            this.ycListener = (YesCancelDialogListener) activity;
+        }
+        catch(ClassCastException e) {
+            // The activity does not implement the interface
+            throw new ClassCastException(activity.toString() +
+                     " must implement YesCancelDialogListener");
+        }
     }
     
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	    
-		//
-		switch (getArguments().getInt("Type")) {
-		case DIALOG_GPS:
-			//set Title and message
-		    builder.setTitle(R.string.noGPS);
-		    builder.setMessage(R.string.noGPSmsg);
-		    break;
-		case DIALOG_STOP_TRACKING:
-			//set Title and message
-			builder.setTitle(R.string.stopTracking);
-			builder.setMessage(R.string.stopTrackingMsg);
-			break;
-		case DIALOG_DELETE_TRACK:
-			builder.setTitle(R.string.deleteTrack);
-			builder.setMessage(R.string.deleteTrackMsg);
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-		}
-		
-	    //Add action buttons, you don't need to specify them in the layout file.
-	    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-	    		   @Override
-	    		   public void onClick(DialogInterface dialog, int id) {
-	    			   ycListener.onDialogPositiveClick(
-							   YesCancelDialogFragment.this, getArguments().getInt("Type"));
-	    		   }
-	    	   })
-	    	   .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        //
+        switch (getArguments().getInt("Type")) {
+        case DIALOG_GPS:
+            //set Title and message
+            builder.setTitle(R.string.noGPS);
+            builder.setMessage(R.string.noGPSmsg);
+            break;
+        case DIALOG_STOP_TRACKING:
+            //set Title and message
+            builder.setTitle(R.string.stopTracking);
+            builder.setMessage(R.string.stopTrackingMsg);
+            break;
+        case DIALOG_DELETE_TRACK:
+            builder.setTitle(R.string.deleteTrack);
+            builder.setMessage(R.string.deleteTrackMsg);
+
+        }
+
+        //Add action buttons, you don't need to specify them in the layout file.
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int id) {
+                       ycListener.onDialogPositiveClick(
+                               YesCancelDialogFragment.this, getArguments().getInt("Type"));
+                   }
+               })
+               .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the negative button event back to the host activity
-                	   ycListener.onDialogNegativeClick(
-							   YesCancelDialogFragment.this, getArguments().getInt("Type"));
+                       ycListener.onDialogNegativeClick(
+                               YesCancelDialogFragment.this, getArguments().getInt("Type"));
                    }
                });
-		return builder.create();
-	}
+        return builder.create();
+    }
 
 }

@@ -67,25 +67,25 @@ public class MainActivity extends Activity implements TrackDialogListener{
         //get our buttons and assign onClickListener to them
         ImageButton butNewTrack = (ImageButton) findViewById(R.id.butStartTracking);
         butNewTrack.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 if (canTrack) {
                     DialogFragment trackDialog = new TrackNameDialogFragment();
                     trackDialog.show(getFragmentManager(), "trackdialog");
                 }
-			}
-		});
+            }
+        });
         ImageButton butTrackList = (ImageButton) findViewById(R.id.butShowTracks);
         butTrackList.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 if (showTracks) {
                     //Intent trackListIntent = new Intent(MainActivity.this, TrackListActivity.class);
                     Intent trackListIntent = new Intent(MainActivity.this, TrackContainerActivity.class);
                     startActivity(trackListIntent);
                 }
-			}
-		});
+            }
+        });
 
         requestPermission(MainActivity.PERMISSION_LOCATION);
         requestPermission(MainActivity.PERMISSION_STORAGE);
@@ -116,18 +116,18 @@ public class MainActivity extends Activity implements TrackDialogListener{
     }
 
     @Override
-	public void onDialogPositiveClick(DialogFragment dialog, String trackName) {
-		Intent intNewTrack = new Intent(MainActivity.this, TrackActivity.class);
-		intNewTrack.putExtra("org.crappbytes.TrackName", trackName);
-		startActivity(intNewTrack);
-	}
+    public void onDialogPositiveClick(DialogFragment dialog, String trackName) {
+        Intent intNewTrack = new Intent(MainActivity.this, TrackActivity.class);
+        intNewTrack.putExtra("org.crappbytes.TrackName", trackName);
+        startActivity(intNewTrack);
+    }
 
 
-	@Override
-	public void onDialogNegativeClick(DialogFragment dialog) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // TODO Auto-generated method stub
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

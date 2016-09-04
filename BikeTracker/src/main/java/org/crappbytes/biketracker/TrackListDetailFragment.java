@@ -65,23 +65,23 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
     private TextView trackSpeedMin;
     private TextView trackSpeedAvg;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         //yes we have a menu :)
         setHasOptionsMenu(true);
         getLoaderManager().initLoader(LOADER_TRACK, null, this);
         getLoaderManager().initLoader(LOADER_NODES, null, this);
         getLoaderManager().initLoader(LOADER_NODESFUNC, null, this);
-	}
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         //TODO:
         //inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.tracklist_detail_layout, container, false);
+        View view = inflater.inflate(R.layout.tracklist_detail_layout, container, false);
 
         this.trackName = (TextView) view.findViewById(R.id.detailTrackName);
         this.trackBegin = (TextView) view.findViewById(R.id.detailTrackStart);
@@ -96,13 +96,13 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
         this.trackSpeedAvg = (TextView) view.findViewById(R.id.detail_speedAvg);
 
         return view;
-	}
+    }
 
-	@Override
-	public void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-	}
+    @Override
+    public void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -24,25 +24,25 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class TrackDBHelper extends SQLiteOpenHelper {
-	
-	private static final String DATABASE_NAME = "biketracker.db";
-	private static final int DATABASE_VERSION = 1;
 
-	public TrackDBHelper(Context context, String name, CursorFactory factory,
-			int version) {
-		super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-	}
+    private static final String DATABASE_NAME = "biketracker.db";
+    private static final int DATABASE_VERSION = 1;
 
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		TrackTable.onCreate(db);
-		TrackNodesTable.onCreate(db);
-	}
+    public TrackDBHelper(Context context, String name, CursorFactory factory,
+            int version) {
+        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    }
 
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		TrackTable.onUpgrade(db, oldVersion, newVersion);
-		TrackNodesTable.onUpgrade(db, oldVersion, newVersion);
-	}
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        TrackTable.onCreate(db);
+        TrackNodesTable.onCreate(db);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        TrackTable.onUpgrade(db, oldVersion, newVersion);
+        TrackNodesTable.onUpgrade(db, oldVersion, newVersion);
+    }
 
 }

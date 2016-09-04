@@ -17,7 +17,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-    <style name="Theme.Material.Biketracker.Blue" parent="android:Theme.Material" >
+    <style name="Theme.Material.Biketracker.Blue" parent="android:Theme.Material">
         <item name="android:windowBackground">@color/general_blue_background</item>
         <item name="android:colorBackground">@color/general_blue_background</item>
         <item name="android:colorAccent">@color/accent_material_dark</item>
