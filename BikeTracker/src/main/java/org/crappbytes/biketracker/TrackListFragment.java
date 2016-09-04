@@ -76,6 +76,7 @@ public class TrackListFragment extends ListFragment implements LoaderCallbacks<C
         // set a string that should be displayed if there are no tracks in the db
         setEmptyText(getResources().getString(R.string.noTracksInDB));
 
+        // this hides the list and starts the progress bar
         setListShown(false);
 
         // we registering our listview for longpress context menu
@@ -169,6 +170,7 @@ public class TrackListFragment extends ListFragment implements LoaderCallbacks<C
             // old cursor once we return.)
             this.adapter.swapCursor(cursor);
         }
+        // make sure to show the list again after the data was loaded. this will hide the progress bar
         setListShown(true);
     }
 

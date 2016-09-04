@@ -43,11 +43,16 @@
     <string name="exportKMLTitle">Exporting Track as KML</string>
     <string name="exportKMLMessage">Writing Track %1$s to sdcard \n Please wait…</string>
     <string name="imgMapHint">Will show a map image"</string>
+    <string name="trackEditTitle">Edit Track</string>
+    <string name="trackNameEmpty">Track name may not be empty</string>
     <!--units-->
     <string name="unit_meters" translatable="true">m</string>
     <string name="unit_speed">km/h</string>
     <!--preferences-->
     <string name="prefGPS">GPS</string>
     <string name="title_activity_stats">StatsActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

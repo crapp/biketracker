@@ -78,7 +78,7 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         //TODO:
         //inflate the layout for this fragment
         View view = inflater.inflate(R.layout.tracklist_detail_layout, container, false);
@@ -140,9 +140,17 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
                 alertBuilder.setNegativeButton(R.string.cancel, null);
                 alertBuilder.show();
                 return true;
+            case R.id.menutrackedit:
+                // show a dialog to edit the track name. what else could we want to edit here?
+                TrackEditFragment editfrag = new TrackEditFragment();
+                Bundle args = new Bundle();
+                args.putLong(TrackEditFragment.ARG_TRACK_ID, id);
+                args.putString(TrackEditFragment.ARG_TRACK_NAME, this.trackName.getText().toString());
+                editfrag.setArguments(args);
+                editfrag.show(getFragmentManager(), "edit_track");
             case R.id.menuexportkml:
                 ExportTask expTask = new ExportTask(getActivity(), this.trackName.getText().toString());
-                Long ids[] = new Long[] {id};
+                Long ids[] = new Long[]{id};
                 expTask.execute(ids);
                 return true;
             default:
@@ -161,7 +169,7 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
                         TracksContentProvider.CONTENT_URI_TRACK,
                         null,
                         TrackTable.COLUMN_ID + "=?",
-                        new String[] {String.valueOf(id)},
+                        new String[]{String.valueOf(id)},
                         null);
                 break;
             case LOADER_NODES:
@@ -169,11 +177,11 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
                         TracksContentProvider.CONTENT_URI_NODES,
                         null,
                         TrackNodesTable.COLUMN_TRACKID + "=?",
-                        new String[] {String.valueOf(id)},
+                        new String[]{String.valueOf(id)},
                         TrackNodesTable.COLUMN_TIMESTAMP + " ASC");
                 break;
             case LOADER_NODESFUNC:
-                String projection[] = new String[] {
+                String projection[] = new String[]{
                         "MAX(" + TrackNodesTable.COLUMN_ALTITUDELPF +
                                 ") AS max_" + TrackNodesTable.COLUMN_ALTITUDELPF,
                         "MIN(" + TrackNodesTable.COLUMN_ALTITUDELPF +
@@ -195,7 +203,7 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
                         TracksContentProvider.CONTENT_URI_NODES,
                         projection,
                         TrackNodesTable.COLUMN_TRACKID + "=?",
-                        new String[] {String.valueOf(id)},
+                        new String[]{String.valueOf(id)},
                         null);
         }
         return cloader;
