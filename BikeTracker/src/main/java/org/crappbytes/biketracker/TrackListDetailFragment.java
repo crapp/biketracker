@@ -84,16 +84,6 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
         View view = inflater.inflate(R.layout.tracklist_detail_layout, container, false);
 
         this.trackName = (TextView) view.findViewById(R.id.detailTrackName);
-        this.trackBegin = (TextView) view.findViewById(R.id.detailTrackStart);
-        this.trackEnd = (TextView) view.findViewById(R.id.detailTrackEnd);
-        this.trackDistance = (TextView) view.findViewById(R.id.detailTrackDist);
-        this.trackAscend = (TextView) view.findViewById(R.id.detail_heightUp);
-        this.trackDescend = (TextView) view.findViewById(R.id.detail_heightDown);
-        this.trackAltMax = (TextView) view.findViewById(R.id.detail_heightMax);
-        this.trackAltMin = (TextView) view.findViewById(R.id.detail_heightMin);
-        this.trackSpeedMax = (TextView) view.findViewById(R.id.detail_speedMax);
-        this.trackSpeedMin = (TextView) view.findViewById(R.id.detail_speedMin);
-        this.trackSpeedAvg = (TextView) view.findViewById(R.id.detail_speedAvg);
 
         return view;
     }
@@ -226,25 +216,8 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
                     cursor.moveToLast();
                     String dateStringTo = cursor.getString(cursor.getColumnIndex(TrackNodesTable.COLUMN_TIMESTAMP));
 
-                    this.trackBegin.setText(dateStringFrom);
-
-                    this.trackEnd.setText(dateStringTo);
-
-//                    //get system date format
-//                    DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity());
-//                    //parse date string from db
-//                    SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//
-//                    Date d = null;
-//                    try {
-//                        d = dFormat.parse(dateStringFrom);
-//                        trackBegin.setText(dateFormat.format(d));
-//                        d= dFormat.parse(dateStringTo);
-//                        trackEnd.setText(dateFormat.format(d));
-//                    } catch (ParseException e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
+//                    this.trackBegin.setText(dateStringFrom);
+//                    this.trackEnd.setText(dateStringTo);
                     break;
                 case LOADER_NODESFUNC:
                     //move to first entry in cursor.
@@ -273,14 +246,14 @@ public class TrackListDetailFragment extends Fragment implements LoaderCallbacks
                     String minSpeed = getResources().getString(R.string.altitudeMin) + " " + String.valueOf(speedMin) + "km/h";
                     String maxSpeed = getResources().getString(R.string.altitudeMax) + " " + String.valueOf(speedMax) + "km/h";
                     String avgSpeed = getResources().getString(R.string.speedAverage) + " " + String.valueOf(speedAvg) + "km/h";
-                    this.trackDistance.setText(sDist);
-                    this.trackAscend.setText(trackAsc);
-                    this.trackDescend.setText(trackDesc);
-                    this.trackAltMax.setText(maxAlti);
-                    this.trackAltMin.setText(minAlti);
-                    this.trackSpeedMin.setText(minSpeed);
-                    this.trackSpeedMax.setText(maxSpeed);
-                    this.trackSpeedAvg.setText(avgSpeed);
+//                    this.trackDistance.setText(sDist);
+//                    this.trackAscend.setText(trackAsc);
+//                    this.trackDescend.setText(trackDesc);
+//                    this.trackAltMax.setText(maxAlti);
+//                    this.trackAltMin.setText(minAlti);
+//                    this.trackSpeedMin.setText(minSpeed);
+//                    this.trackSpeedMax.setText(maxSpeed);
+//                    this.trackSpeedAvg.setText(avgSpeed);
                     break;
             }
         }

@@ -10,6 +10,8 @@ x 2016-09-03 2016-09-03 Delete button in track detail view, deletes the track bu
 (C) 2016-09-03 In track activity add small icons to speed and altitude areas to indicate speed is slower/faster than average or device is descending or ascending @tracks
 (B) 2016-09-03 Add slope information. We would need to calculate this in the GPS background service
 x 2016-08-30 2016-08-30 Fix permission request on Marshmallow @permission
-(A) 2016-09-04 There are severall Activities and Fragments with a stub name
+(A) 2016-09-04 There are several Activities and Fragments with a stub name
 (B) 2016-09-04 Show number of track data points in track detail view
 (B) 2016-09-04 Make it possible to filter the track list by date or other things
+(D) 2016-09-04 Associate images with tracks
+(C) 2016-09-04 Add some kind of mapping solution to show the tracks. Preferably openstreetmap based
